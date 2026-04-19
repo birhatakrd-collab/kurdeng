@@ -1,585 +1,482 @@
 <!DOCTYPE html>
-<html lang="ku" dir="rtl" data-theme="dark">
+<html lang="ku" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kurdeng - کوردینگ</title>
+    <title>Kurdeng | کوردەنگ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* دانانا فۆنتێ ڕابەر */
         @font-face {
-            font-family: 'Rabar_041';
-            src: local('Rabar_041');
+            font-family: 'rabar_041';
+            src: url('rabar_041.ttf') format('truetype');
         }
 
-        /* ستایلێ نوی و سەردەمیانە */
+        /* گۆڕاوێن ڕەنگان - پرتەقاڵیەکا گەلەک جوان (Gradient) */
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --card-border: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --primary: #3b82f6;
-            --primary-light: #60a5fa;
-            --gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            --gradient-hover: linear-gradient(135deg, #2563eb, #7c3aed);
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            --bg-color: #0d0d0d;
+            --surface-color: #1a1a1a;
+            --text-color: #ffffff;
+            --text-muted: #a0a0a0;
+            --primary-gradient: linear-gradient(135deg, #ff8c00, #ff3d00);
+            --primary-color: #ff6a00;
+            --border-color: #333333;
+            --glass-bg: rgba(26, 26, 26, 0.6);
+            --glass-border: rgba(255, 106, 0, 0.2);
         }
-        
-        [data-theme="black"] {
-            --bg-color: #000000;
-            --card-bg: #0a0a0a;
-            --card-border: #1a1a1a;
-            --text-main: #ffffff;
-            --text-muted: #666666;
-            --primary: #8b5cf6;
-            --primary-light: #a78bfa;
-            --gradient: linear-gradient(135deg, #4c1d95, #6d28d9);
-            --shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.05);
-        }
-        
-        [data-theme="light"] {
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --card-border: #e2e8f0;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --primary: #4f46e5;
-            --primary-light: #6366f1;
-            --gradient: linear-gradient(135deg, #4f46e5, #ec4899);
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+
+        /* دۆخێ ڕووناکی (Light Mode) */
+        body.light-mode {
+            --bg-color: #f4f7f6;
+            --surface-color: #ffffff;
+            --text-color: #111111;
+            --text-muted: #555555;
+            --border-color: #e0e0e0;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 106, 0, 0.3);
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Rabar_041', Tahoma, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            box-sizing: border-box;
+            font-family: 'rabar_041', Arial, sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
         }
 
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            overflow-x: hidden; 
-            line-height: 1.6; 
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Header */
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 18px 25px; background-color: var(--card-bg);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            position: sticky; top: 0; z-index: 100; direction: ltr; 
+        /* ----- سەری (Navbar) ----- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
         }
-        .header-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .logo-icon { font-size: 28px; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .logo-text { font-size: 26px; font-weight: 900; letter-spacing: 1px; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .menu-btn { background: none; border: none; color: var(--text-main); font-size: 24px; cursor: pointer; transition: transform 0.2s;}
-        .menu-btn:active { transform: scale(0.9); }
 
-        /* Drawer Menu */
-        .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
-        [dir="rtl"] .drawer-menu { right: -320px; }
-        [dir="ltr"] .drawer-menu { left: -320px; }
-        .drawer-menu { position: fixed; top: 0; width: 300px; height: 100%; background-color: var(--card-bg); z-index: 1000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; padding: 40px 25px; box-shadow: var(--shadow); }
-        [dir="rtl"] .drawer-menu.open { right: 0; }
-        [dir="ltr"] .drawer-menu.open { left: 0; }
-        .drawer-overlay.open { display: block; opacity: 1; }
-        .drawer-logo { text-align: center; margin-bottom: 40px; font-size: 32px; font-weight: bold; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .drawer-links { list-style: none; flex-grow: 1; }
-        .drawer-links li { margin-bottom: 15px; }
-        .drawer-links a { color: var(--text-main); text-decoration: none; font-size: 18px; display: flex; align-items: center; gap: 15px; padding: 12px 15px; border-radius: 12px; transition: 0.3s; }
-        .drawer-links a:hover { background: var(--gradient); color: #fff; transform: translateX(5px); }
-        .drawer-links a:hover i { color: #fff; }
+        .logo {
+            font-size: 2.2rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .btn-icon:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        /* ----- مینیویێ لایێ ڕاستێ (Sidebar) ----- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 300px;
+            height: 100vh;
+            background-color: var(--surface-color);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+            z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.open { right: 0; }
+
+        .sidebar-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+
+        .sidebar-menu li {
+            padding: 18px 30px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--text-color);
+        }
+
+        .sidebar-menu li i { color: var(--primary-color); }
+
+        .sidebar-menu li:hover {
+            background: rgba(255, 106, 0, 0.1);
+            padding-right: 40px; /* ئیفێکتێ کشاندنێ ل دەمێ هۆڤەر */
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ----- بەشێ سەرەکی (Main) ----- */
+        main {
+            margin-top: 100px;
+            padding: 40px 5%;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        /* بەشێ وەرگێڕانێ */
+        .translator-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 30px;
+            width: 100%;
+            max-width: 1100px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            padding: 0 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 220px;
+            background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            resize: none;
+            outline: none;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.1), 0 0 15px rgba(255, 106, 0, 0.2);
+        }
+
+        #englishInput { dir: ltr; text-align: left; }
+        #kurdishOutput { dir: rtl; text-align: right; }
+
+        .btn-translate {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 50%;
+            width: 75px;
+            height: 75px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(255, 106, 0, 0.4);
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .btn-translate:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 15px 30px rgba(255, 106, 0, 0.6);
+        }
+
+        /* بەشێ دەربارەی مە (About Us) */
+        .about-section {
+            background: var(--surface-color);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 1100px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* خەتێ جوان یێ سەری بەشێ دەربارەی مە */
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: var(--primary-gradient);
+        }
+
+        .about-section h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .about-section p {
+            font-size: 1.25rem;
+            line-height: 1.9;
+            color: var(--text-muted);
+            text-align: justify;
+            text-align-last: center; /* بۆ ڕێکخستنا ڕێزکا دوماهیێ */
+        }
+
+        /* ----- بنیات (Footer) ----- */
+        footer {
+            background-color: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px; height: 45px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            border-radius: 50%;
+            font-size: 1.5rem;
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .social-icons a:hover {
+            background: var(--primary-gradient);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 106, 0, 0.4);
+        }
+
+        .copyright {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
         
-        .settings-group { margin-top: auto; border-top: 1px solid var(--card-border); padding-top: 25px; }
-        .settings-group select { width: 100%; padding: 12px; margin-bottom: 12px; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--card-border); border-radius: 10px; font-family: 'Rabar_041', sans-serif; font-size: 16px; outline: none; cursor: pointer; }
-        .settings-group select:focus { border-color: var(--primary); }
-
-        .page { display: none; padding: 25px; max-width: 800px; margin: auto; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .page.active { display: block; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Ad Banner (New Style) */
-        .ad-banner { background: var(--card-bg); border-radius: 20px; padding: 25px; text-align: center; margin-bottom: 30px; box-shadow: var(--shadow); position: relative; overflow: hidden; border: 1px solid var(--card-border); }
-        .ad-banner::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--gradient); }
-        .ad-banner h3 { color: var(--text-main); font-size: 22px; margin-bottom: 8px; }
-        .ad-banner p { font-size: 15px; color: var(--text-muted); margin-bottom: 20px; }
-        .ad-contact { display: inline-flex; align-items: center; gap: 10px; padding: 12px 25px; border-radius: 30px; background: var(--gradient); color: #fff; font-weight: bold; font-size: 16px; text-decoration: none; direction: ltr; transition: 0.3s; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
-        .ad-contact:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6); }
-
-        /* Search */
-        .search-box { display: flex; align-items: center; background: var(--card-bg); border: 2px solid var(--card-border); border-radius: 16px; padding: 5px 20px; margin-bottom: 30px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .search-box:focus-within { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
-        .search-box input { background: transparent; border: none; color: var(--text-main); padding: 15px; width: 100%; font-size: 16px; outline: none; }
-        .search-box i { color: var(--primary); font-size: 20px; }
-
-        /* Levels */
-        .level-card { background: var(--card-bg); border-radius: 16px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--card-border); cursor: pointer; display: flex; flex-direction: column; transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .level-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--shadow); }
-        .level-card::after { content: '\f054'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 25px; top: 50%; transform: translateY(-50%); color: var(--card-border); font-size: 20px; transition: 0.3s; }
-        [dir="rtl"] .level-card::after { left: 25px; right: auto; content: '\f053'; }
-        .level-card:hover::after { color: var(--primary); }
-        
-        .level-title { font-size: 24px; font-weight: 900; color: var(--text-main); margin-bottom: 10px; direction: ltr; text-align: left; }
-        .level-info { display: flex; justify-content: space-between; color: var(--text-muted); font-size: 15px; direction: ltr; padding-right: 30px; }
-        [dir="rtl"] .level-info { padding-right: 0; padding-left: 30px; }
-
-        /* Word List */
-        .word-item { background: var(--card-bg); border-radius: 14px; padding: 18px 20px; margin-bottom: 12px; border: 1px solid var(--card-border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-        .word-item:hover { border-color: var(--primary); background: rgba(59, 130, 246, 0.05); transform: scale(1.01); }
-        .word-en-title { font-size: 18px; font-weight: bold; color: var(--text-main); direction: ltr; }
-        .word-ku-preview { color: var(--text-muted); font-size: 15px; }
-
-        /* Word Detail */
-        .nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; }
-        .back-btn { background: var(--card-bg); width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--card-border); color: var(--text-main); font-size: 18px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;}
-        .back-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
-        .word-number { background: var(--card-bg); padding: 8px 15px; border-radius: 20px; border: 1px solid var(--card-border); color: var(--primary); font-weight: bold; font-size: 14px; }
-
-        .image-placeholder { background: var(--card-bg); border-radius: 20px; border: 2px dashed var(--card-border); height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); margin-bottom: 25px; font-size: 18px; letter-spacing: 1px; }
-        .image-placeholder i { font-size: 50px; margin-bottom: 15px; color: var(--card-border); }
-
-        .meaning-card { background: var(--card-bg); border-radius: 20px; padding: 25px; margin-bottom: 25px; border: 1px solid var(--card-border); box-shadow: var(--shadow); }
-        .mc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .mc-word-en { font-size: 32px; font-weight: 900; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 15px; direction: ltr; }
-        .mc-word-ku { font-size: 26px; font-weight: bold; color: var(--text-main); }
-        .mc-pos { display: inline-flex; gap: 10px; background: rgba(59, 130, 246, 0.1); padding: 5px 12px; border-radius: 8px; font-size: 13px; color: var(--primary); margin-bottom: 20px; font-weight: bold;}
-        .pos-en { direction: ltr; }
-        
-        .mc-divider { height: 1px; background: var(--card-border); margin: 20px 0; }
-        
-        .mc-def-en { font-size: 17px; color: var(--text-main); margin-bottom: 8px; direction: ltr; text-align: left; }
-        .mc-def-ku { font-size: 17px; color: var(--text-muted); text-align: right; }
-        
-        .mc-ex-label { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: bold; margin-bottom: 12px; direction: ltr; text-align: left;}
-        .mc-ex-en { font-size: 18px; color: var(--text-main); margin-bottom: 8px; direction: ltr; text-align: left; font-style: italic; border-left: 3px solid var(--primary); padding-left: 15px;}
-        .mc-ex-ku { font-size: 17px; color: var(--text-muted); text-align: right; }
-
-        /* Highlight Word in Example */
-        .hl-word { color: var(--primary-light); font-weight: bold; text-decoration: underline; text-decoration-color: var(--primary); text-underline-offset: 4px; }
-
-        .play-icon { cursor: pointer; transition: 0.2s; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 24px;}
-        .play-icon:hover { opacity: 0.7; transform: scale(1.1); }
-
-        /* About */
-        .profile-img { width: 120px; height: 120px; background: var(--card-bg); border: 3px solid var(--primary); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; font-size: 50px; color: var(--primary); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2); }
-        .about-text { font-size: 16px; color: var(--text-muted); margin-bottom: 35px; text-align: justify; line-height: 1.9; padding: 0 10px; }
-        .social-btn { background: var(--card-bg); color: var(--text-main); padding: 18px 20px; border-radius: 16px; text-decoration: none; border: 1px solid var(--card-border); font-size: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; transition: 0.3s; font-weight: bold; }
-        .social-btn:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .social-handle { color: var(--text-muted); direction: ltr; font-weight: normal;}
-
-        /* --- MOBILE POPUP MODAL (NEW) --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
-            z-index: 2000; display: none; align-items: center; justify-content: center;
-            padding: 20px; animation: fadeIn 0.3s;
+        .copyright span {
+            color: var(--primary-color);
+            font-weight: bold;
         }
-        .modal-box {
-            background: var(--card-bg); border-radius: 24px; padding: 30px 20px;
-            text-align: center; max-width: 400px; width: 100%;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4); border: 1px solid var(--card-border);
-            position: relative; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .modal-icon {
-            font-size: 50px; color: var(--primary); margin-bottom: 15px;
-            background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .modal-box h3 { font-size: 22px; color: var(--text-main); margin-bottom: 10px; }
-        .modal-box p { font-size: 15px; color: var(--text-muted); margin-bottom: 25px; line-height: 1.6; }
-        .modal-sponsor {
-            background: rgba(59, 130, 246, 0.05); padding: 15px; border-radius: 16px;
-            margin-bottom: 25px; border: 1px dashed var(--primary);
-        }
-        .modal-sponsor span { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
-        .modal-sponsor a {
-            display: inline-block; color: var(--primary-light); font-weight: bold;
-            font-size: 18px; text-decoration: none; direction: ltr;
-        }
-        .modal-btn {
-            background: var(--gradient); color: #fff; border: none;
-            padding: 14px 30px; font-size: 16px; font-weight: bold;
-            border-radius: 30px; cursor: pointer; width: 100%; transition: 0.3s;
-        }
-        .modal-btn:active { transform: scale(0.95); }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
+        /* ----- دیزاینا مۆبایلێ ----- */
+        @media (max-width: 768px) {
+            .translator-container { grid-template-columns: 1fr; }
+            .btn-translate {
+                margin: -10px auto;
+                transform: rotate(90deg);
+                width: 60px; height: 60px;
+                font-size: 1.5rem;
+                z-index: 10;
+            }
+            .btn-translate:hover { transform: scale(1.1) rotate(270deg); }
+            .about-section p { text-align: right; text-align-last: right; font-size: 1.1rem; }
+            textarea { height: 160px; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="mobileWelcomeModal" class="modal-overlay">
-        <div class="modal-box">
-            <i class="fas fa-tools modal-icon"></i>
-            <h3 data-i18n="modal_welcome">بخێربهێی بۆ وێبسایتێ مە!</h3>
-            <p data-i18n="modal_desc">ئەڤ وێبسایتە هێشتا یێ د قۆناغا کارکرنێ دا (بێتا یە). ل دەمەکێ نێزیک چاڤەرێ بن.</p>
-            
-            <div class="modal-sponsor">
-                <span data-i18n="modal_sponsor_text">ژ بۆ سپۆنسەرکرنێ، پەیوەندیێ ب ڤێ ژمارێ بکەن:</span>
-                <a href="https://t.me/birhatkrd"><i class="fab fa-telegram"></i> +44 7543 151 831 🇬🇧</a>
-            </div>
-
-            <button class="modal-btn" onclick="closeModal()" data-i18n="modal_btn">باشە، تێگەهشتم</button>
+    <nav>
+        <div class="logo">
+            <i class="fa-solid fa-language"></i> کوردەنگ
         </div>
-    </div>
-
-    <header>
-        <a href="#" class="header-logo" onclick="showPage('home')">
-            <i class="fas fa-layer-group logo-icon"></i>
-            <span class="logo-text">Kurdeng</span>
-        </a>
-        <button class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars-staggered"></i></button>
-    </header>
-
-    <div class="drawer-overlay" id="drawerOverlay" onclick="toggleMenu()"></div>
-    <nav class="drawer-menu" id="drawerMenu">
-        <div class="drawer-logo">Kurdeng</div>
-        <ul class="drawer-links">
-            <li><a href="#" onclick="showPage('home'); toggleMenu();"><i class="fas fa-house"></i> <span data-i18n="nav_home">سەرەکی</span></a></li>
-            <li><a href="#" onclick="showPage('about'); toggleMenu();"><i class="fas fa-circle-info"></i> <span data-i18n="nav_about">دەربارەی من</span></a></li>
-        </ul>
-        <div class="settings-group">
-            <select id="themeSelect" onchange="changeTheme()">
-                <option value="dark" data-i18n="theme_dark">تاریک (Dark)</option>
-                <option value="black" data-i18n="theme_black">ڕەش (Pitch Black)</option>
-                <option value="light" data-i18n="theme_light">ڕووناهی (Light)</option>
-            </select>
-            <select id="langSelect" onchange="changeLanguage()">
-                <option value="ku">کوردی (بەهدینی)</option>
-                <option value="en">English</option>
-                <option value="ar">العربية</option>
-            </select>
+        <div class="nav-buttons">
+            <button class="btn-icon" onclick="toggleTheme()" title="تاریک / ڕووناکی"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
+            <button class="btn-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
         </div>
     </nav>
 
-    <main id="home" class="page active">
-        <div class="ad-banner">
-            <h3 data-i18n="ad_title">ژ بۆ ڕیکلامێ</h3>
-            <p data-i18n="ad_desc">پەیوەندیێ ب مە بکە بۆ بەلاڤکرنا ڕیکلاما تە ل ڤێرە</p>
-            <a href="https://t.me/birhatkrd" class="ad-contact">
-                <i class="fab fa-telegram-plane"></i> +44 7543 151 831 🇬🇧
-            </a>
-        </div>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="لێگەریان د ناڤ پەیڤان دا..." data-i18n-ph="search_ph" onkeyup="searchWords()">
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2 style="color: var(--primary-color);">مینیو</h2>
+            <button class="btn-icon" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
         </div>
+        <ul class="sidebar-menu">
+            <li><i class="fa-solid fa-star"></i> پەیڤێن دلخواز</li>
+            <li><i class="fa-solid fa-clock-rotate-left"></i> دیرۆکا وەرگێڕانان</li>
+            <li><i class="fa-solid fa-bullhorn"></i> ژبۆ ڕیکلامێ</li>
+            <li><i class="fa-solid fa-circle-info"></i> دەربارەی مە</li>
+            <li><i class="fa-solid fa-gear"></i> ڕێکخستن</li>
+        </ul>
+    </div>
 
-        <div id="levels-container">
-            <div class="level-card" onclick="openLevel('A1', 'Beginner', 1, 1000)">
-                <div class="level-title">Beginner</div>
-                <div class="level-info"><span>words 1 - 1000</span><span data-i18n="level_a1">ئاستێ A1</span></div>
+    <main>
+        <div class="translator-container">
+            <div class="box">
+                <div class="box-header">
+                    <span>ئینگلیزی (English)</span>
+                    <i class="fa-solid fa-volume-high btn-icon" title="گوهدان"></i>
+                </div>
+                <textarea id="englishInput" placeholder="Enter text to translate..."></textarea>
             </div>
-            <div class="level-card" onclick="openLevel('A2', 'Elementary', 1001, 2000)">
-                <div class="level-title">Elementary</div>
-                <div class="level-info"><span>words 1001 - 2000</span><span data-i18n="level_a2">ئاستێ A2</span></div>
+
+            <button class="btn-translate" onclick="startTranslation()" title="کلیک بکە بۆ وەرگێڕانێ">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            </button>
+
+            <div class="box">
+                <div class="box-header">
+                    <span>کوردی (بەهدینی)</span>
+                    <i class="fa-regular fa-copy btn-icon" title="کۆپی کرن"></i>
+                </div>
+                <textarea id="kurdishOutput" placeholder="ئەنجام دێ ل ڤێرە دیار بیت..." readonly></textarea>
             </div>
-            <div class="level-card" onclick="openLevel('B1', 'Pre-Intermediate', 2001, 3000)">
-                <div class="level-title">Pre-Intermediate</div>
-                <div class="level-info"><span>words 2001 - 3000</span><span data-i18n="level_b1">ئاستێ B1</span></div>
-            </div>
-            <div class="level-card" onclick="openLevel('B2', 'Intermediate', 3001, 4000)">
-                <div class="level-title">Intermediate</div>
-                <div class="level-info"><span>words 3001 - 4000</span><span data-i18n="level_b2">ئاستێ B2</span></div>
-            </div>
         </div>
 
-        <div id="search-results" style="display:none;"></div>
-    </main>
-
-    <main id="level-view" class="page">
-        <div class="nav-bar">
-            <button class="back-btn" onclick="showPage('home')"><i class="fas fa-arrow-right" id="backIconLevel"></i></button>
-            <h2 id="current-level-title" style="direction:ltr; font-weight:900;">Beginner</h2>
-            <div style="width:45px;"></div> </div>
-        <div id="words-list"></div>
-    </main>
-
-    <main id="word-detail" class="page">
-        <div class="nav-bar">
-            <button class="back-btn" onclick="showPage('level-view')"><i class="fas fa-arrow-right" id="backIconWord"></i></button>
-            <span class="word-number" id="detail-word-num">#1</span>
-        </div>
-
-        <div class="image-placeholder">
-            <i class="far fa-image"></i>
-            <div>NO IMAGE AVAILABLE</div>
-        </div>
-
-        <div id="meanings-container"></div>
-    </main>
-
-    <main id="about" class="page">
-        <div class="nav-bar">
-            <button class="back-btn" onclick="showPage('home')"><i class="fas fa-arrow-right" id="backIconAbout"></i></button>
-            <h2 data-i18n="about_title" style="font-weight:900;">دەربارەی من</h2>
-            <div style="width:45px;"></div>
-        </div>
-        
-        <div style="text-align: center;">
-            <div class="profile-img"><i class="fas fa-user-astronaut"></i></div>
-            <h2 style="color: var(--text-main); margin-bottom: 15px; font-weight:900;" data-i18n="author_name">بیرهات (Birhat)</h2>
-            <p class="about-text" data-i18n="about_text">
-                ناڤێ من بیرهاتە، دەرچوویێ بەشێ زمانێ ئینگلیزی مە ل زانکۆیا زاخۆ. باوەریەکا موکوم ب وێ چەندێ هەیە کو زمانێ ئینگلیزی نە تەنێ ئامرازەکێ ئاخفتنێ یە، بەلکو کلیلا ڤەکرنا دەرگەهێن زانست، تەکنەلۆژیا و پێشکەفتنا سەردەمیانە یە، ب تایبەت د ڤی سەردەمێ زیرەکیا دەستکرد (AI) دا. هەر ژ مێژە خەونا من ئەوە کو ب ڕێکا ڤی پڕۆژەی هاریکاریا گەنجێن کورد بکەم بۆ فێربوونا ڤی زمانێ جیهانی، دا کو پاشەڕۆژەکا گەشتر بۆ خۆ ئاڤا بکەن. هیڤیدارم ئەڤ ماڵپەڕە ببێتە پردەک بۆ گەهشتن ب ئارمانجێن وە.
+        <div class="about-section">
+            <h2><i class="fa-solid fa-graduation-cap"></i> پەیاما دروستکەری</h2>
+            <p>
+                سلاڤ، ناڤێ من <strong>بیرهاتە</strong>، دەرچوویێ بەشێ زمانێ ئینگلیزی مە ل زانکۆیا زاخۆ. باوەرییەکا موکوم ب وێ چەندێ هەیە کو زمانێ ئینگلیزی نە تەنێ ئامرازەکێ ئاخفتنێ یە، بەلکو کلیلا ڤەکرنا دەرگەهێن زانست، تەکنەلۆژیا و پێشکەفتنا سەردەمیانەیە، ب تایبەت د ڤی سەردەمێ زیرەکیا دەستکرد (AI) دا. هەر ژ مێژە خەونا من ئەوە کو ب ڕێکا ڤی پڕۆژەی هاریکاریا گەنجێن کورد بکەم بۆ فێربوونا ڤی زمانێ جیهانی، دا کو پاشەڕۆژەکا گەشتر بۆ خۆ ئاڤا بکەن. هیڤیدارم ئەڤ ماڵپەڕە ببێتە پردەک بۆ گەهشتن ب ئارمانجێن وە.
             </p>
-
-            <a href="#" class="social-btn">
-                <span><i class="fab fa-snapchat-ghost" style="color: #fffc00; -webkit-text-stroke: 1px #000; font-size:20px; vertical-align:middle; margin-right:8px;"></i> Snapchat</span>
-                <span class="social-handle">@birhatkrd</span>
-            </a>
-            <a href="#" class="social-btn">
-                <span><i class="fab fa-instagram" style="color: #E1306C; font-size:20px; vertical-align:middle; margin-right:8px;"></i> Instagram</span>
-                <span class="social-handle">@birhatkrd</span>
-            </a>
-            <a href="#" class="social-btn">
-                <span><i class="fab fa-telegram-plane" style="color: #0088cc; font-size:20px; vertical-align:middle; margin-right:8px;"></i> Telegram</span>
-                <span class="social-handle">@birhatkrd</span>
-            </a>
         </div>
     </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-icons">
+                <a href="https://snapchat.com/add/birhatkrd" target="_blank" title="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
+                <a href="https://instagram.com/birhatkrd" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://t.me/birhatkrd" target="_blank" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+            </div>
+            <p class="copyright">
+                ماڵپەڕ هاتیە دروستکرن ژ لایێ <span>birhatkrd</span> &copy; 2026
+            </p>
+        </div>
+    </footer>
 
     <script>
-        // داتابەیسا پەیڤان
-        const dictionary = [
-            // --- ئاستێ A1 (٢٠ پەیڤ) ---
-            { id: 1, lvl: 'A1', word: "book", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "پەرتووک", defEn: "A written work or composition.", defKu: "کارەکێ نڤێسای یان چاپکری.", exEn: "I am reading a good <span class='hl-word'>book</span>.", exKu: "ئەز یێ پەرتووکەکا باش دخوینم." }] },
-            { id: 2, lvl: 'A1', word: "pen", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "قەلەم", defEn: "An instrument for writing or drawing with ink.", defKu: "ئامرازەکێ نڤێسینێ یە ب مرەکەبێ.", exEn: "Do you have a <span class='hl-word'>pen</span>?", exKu: "قەلەمەک دگەل تە هەیە؟" }] },
-            { id: 3, lvl: 'A1', word: "car", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "ترۆمبێل", defEn: "A four-wheeled road vehicle.", defKu: "ئامرازەکێ ڤەگوهاستنێ یێ چوار تەکەر.", exEn: "He bought a new <span class='hl-word'>car</span>.", exKu: "وی ترۆمبێلەکا نوی کڕی." }] },
-            { id: 4, lvl: 'A1', word: "house", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "خانی", defEn: "A building for human habitation.", defKu: "ئاڤاهیەک بۆ ژیانا مرۆڤان.", exEn: "Their <span class='hl-word'>house</span> is very big.", exKu: "خانیێ وان گەلەک یێ مەزنە." }] },
-            { id: 5, lvl: 'A1', word: "water", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "ئاڤ", defEn: "A transparent, tasteless liquid.", defKu: "شلاڤەکا بێ تام و ڕەنگە.", exEn: "I need to drink some <span class='hl-word'>water</span>.", exKu: "پێدڤیە ئەز کەمەک ئاڤێ ڤەخۆم." }] },
-            { id: 6, lvl: 'A1', word: "food", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "خارن", defEn: "Any nutritious substance that people eat.", defKu: "هەر تشتەکێ مرۆڤ دخۆت.", exEn: "This <span class='hl-word'>food</span> is delicious.", exKu: "ئەڤ خارنە یا خۆشە." }] },
-            { id: 7, lvl: 'A1', word: "boy", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "کور", defEn: "A male child or young man.", defKu: "زارۆک یان گەنجەکێ نێر.", exEn: "The <span class='hl-word'>boy</span> is playing football.", exKu: "کورک یارییا تەپاپێ دکەت." }] },
-            { id: 8, lvl: 'A1', word: "girl", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "کچ", defEn: "A female child or young woman.", defKu: "زارۆک یان گەنجەکا مێ.", exEn: "The <span class='hl-word'>girl</span> is reading.", exKu: "کچک یا دخوینیت." }] },
-            { id: 9, lvl: 'A1', word: "man", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "زەڵام", defEn: "An adult male human being.", defKu: "مرۆڤەکێ نێر یێ مەزن.", exEn: "That <span class='hl-word'>man</span> is my uncle.", exKu: "ئەو زەڵامە مامێ منە." }] },
-            { id: 10, lvl: 'A1', word: "woman", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "ژن", defEn: "An adult female human being.", defKu: "مرۆڤەکا مێ یا مەزن.", exEn: "She is a strong <span class='hl-word'>woman</span>.", exKu: "ئەو ژنەکا ب هێزە." }] },
-            { id: 11, lvl: 'A1', word: "day", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "ڕۆژ", defEn: "A period of 24 hours.", defKu: "ماوێ ٢٤ دەمژمێران.", exEn: "It is a beautiful <span class='hl-word'>day</span>.", exKu: "ڕۆژەکا جوانە." }] },
-            { id: 12, lvl: 'A1', word: "night", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "شەڤ", defEn: "The period of darkness in each 24 hours.", defKu: "ماوێ تاریێ د ناڤ ٢٤ دەمژمێران دا.", exEn: "I sleep well at <span class='hl-word'>night</span>.", exKu: "ئەز ب شەڤێ باش دنڤم." }] },
-            { id: 13, lvl: 'A1', word: "sun", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "ڕۆژ (ستێرک)", defEn: "The star around which the earth orbits.", defKu: "ئەو ستێرکا زەڤی ل دۆر دزڤڕیت.", exEn: "The <span class='hl-word'>sun</span> is shining.", exKu: "ڕۆژ یا ددرەوشیت." }] },
-            { id: 14, lvl: 'A1', word: "moon", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "هەیڤ", defEn: "The natural satellite of the earth.", defKu: "پەیکێ سروشتی یێ زەڤیێ.", exEn: "Look at the full <span class='hl-word'>moon</span>.", exKu: "سەحکە هەیڤا تەمام." }] },
-            { id: 15, lvl: 'A1', word: "tree", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "دار", defEn: "A woody perennial plant.", defKu: "ڕوەکەکێ دارین.", exEn: "The <span class='hl-word'>tree</span> has green leaves.", exKu: "دارێ بەلگێن کەسک هەنە." }] },
-            { id: 16, lvl: 'A1', word: "cat", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "پشیک", defEn: "A small domesticated carnivorous mammal.", defKu: "ئاژەلەکێ ماڵی یێ بچویک.", exEn: "My <span class='hl-word'>cat</span> likes milk.", exKu: "پشیکا من حەز ژ شیری دکەت." }] },
-            { id: 17, lvl: 'A1', word: "dog", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "سەگ", defEn: "A domesticated carnivorous mammal.", defKu: "ئاژەلەکێ ماڵی.", exEn: "The <span class='hl-word'>dog</span> is barking.", exKu: "سەگ یێ دحەفیت." }] },
-            { id: 18, lvl: 'A1', word: "school", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "قوتابخانە", defEn: "An institution for educating children.", defKu: "جهێ فێرکرنا زارۆکان.", exEn: "I walk to <span class='hl-word'>school</span> every day.", exKu: "ئەز هەمی ڕۆژان ب پێیان دچمە قوتابخانێ." }] },
-            { id: 19, lvl: 'A1', word: "teacher", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "مامۆستا", defEn: "A person who teaches, especially in a school.", defKu: "ئەو کەسێ وانان ددەت.", exEn: "Our <span class='hl-word'>teacher</span> is very kind.", exKu: "مامۆستایێ مە گەلەک یێ باشە." }] },
-            { id: 20, lvl: 'A1', word: "friend", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "هەڤال", defEn: "A person whom one knows and has a bond with.", defKu: "کەسەکێ نێزیک و نیاس.", exEn: "He is my best <span class='hl-word'>friend</span>.", exKu: "ئەو باشترین هەڤالێ منە." }] },
-
-            // --- ئاستێ A2 (٢٠ پەیڤ) ---
-            { id: 21, lvl: 'A2', word: "happy", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "دڵخۆش", defEn: "Feeling or showing pleasure or contentment.", defKu: "هەستکرن ب خۆشیێ.", exEn: "She looks very <span class='hl-word'>happy</span> today.", exKu: "ئەڤرۆ گەلەک یا دڵخۆش دیارە." }] },
-            { id: 22, lvl: 'A2', word: "sad", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "خەمگین", defEn: "Feeling or showing sorrow.", defKu: "هەستکرن ب خەمێ.", exEn: "The movie made me <span class='hl-word'>sad</span>.", exKu: "فلمی ئەز یێ خەمگین کرم." }] },
-            { id: 23, lvl: 'A2', word: "fast", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "خێرا", defEn: "Moving or capable of moving at high speed.", defKu: "بزاڤکرن ب لەز.", exEn: "He runs very <span class='hl-word'>fast</span>.", exKu: "ئەو گەلەک ب خێرا دڕەڤیت." }] },
-            { id: 24, lvl: 'A2', word: "slow", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "خاو / هێدی", defEn: "Moving or operating at a low speed.", defKu: "بزاڤکرن ب هێدی.", exEn: "The internet is very <span class='hl-word'>slow</span> here.", exKu: "ئەنتەرنێت ل ڤێرە گەلەک یا خاوە." }] },
-            { id: 25, lvl: 'A2', word: "hot", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "گەرم", defEn: "Having a high degree of heat.", defKu: "پلەیا گەرمیێ یا بلند.", exEn: "The weather is <span class='hl-word'>hot</span> in summer.", exKu: "سەقایێ هاڤینێ یێ گەرمە." }] },
-            { id: 26, lvl: 'A2', word: "cold", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "سار", defEn: "Of or at a low or relatively low temperature.", defKu: "پلەیا گەرمیێ یا نزم.", exEn: "I feel <span class='hl-word'>cold</span> outside.", exKu: "ل دەرڤە هەست ب سەرما دکەم." }] },
-            { id: 27, lvl: 'A2', word: "big", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "مەزن", defEn: "Of considerable size.", defKu: "قەبارەکێ مەزن.", exEn: "They live in a <span class='hl-word'>big</span> city.", exKu: "ئەو د باژێرەکێ مەزن دا دژین." }] },
-            { id: 28, lvl: 'A2', word: "small", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "بچویک", defEn: "Of a size that is less than normal.", defKu: "قەبارەکێ کێمتر ژ یێ ئاسایی.", exEn: "I have a <span class='hl-word'>small</span> problem.", exKu: "ئاریشەکا بچویک یا هەی." }] },
-            { id: 29, lvl: 'A2', word: "good", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "باش", defEn: "To be desired or approved of.", defKu: "تشتەکێ پەسەندکری و پەسند.", exEn: "This is a <span class='hl-word'>good</span> idea.", exKu: "ئەڤە هزرەکا باشە." }] },
-            { id: 30, lvl: 'A2', word: "bad", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "خراب", defEn: "Of poor quality or a low standard.", defKu: "کوالیتیەکا کێم یان خراب.", exEn: "Smoking is a <span class='hl-word'>bad</span> habit.", exKu: "جگەرەکێشان عادەتەکێ خرابە." }] },
-            { id: 31, lvl: 'A2', word: "beautiful", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "جوان", defEn: "Pleasing the senses or mind aesthetically.", defKu: "دیمەنەکێ سەرنجڕاکێش.", exEn: "She has a <span class='hl-word'>beautiful</span> voice.", exKu: "دەنگەکێ جوان یێ هەی." }] },
-            { id: 32, lvl: 'A2', word: "ugly", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "نێشرین", defEn: "Unpleasant or repulsive in appearance.", defKu: "دیمەنەکێ نەجوان.", exEn: "The building is old and <span class='hl-word'>ugly</span>.", exKu: "ئەو ئاڤاهیە یێ کەڤن و نێشرینە." }] },
-            { id: 33, lvl: 'A2', word: "new", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "نوی", defEn: "Produced, introduced, or discovered recently.", defKu: "تشتەکێ نوی دروستکری.", exEn: "I bought a <span class='hl-word'>new</span> phone.", exKu: "من تەلەفۆنەکا نوی کڕی." }] },
-            { id: 34, lvl: 'A2', word: "old", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "کەڤن / دانعەمر", defEn: "Having lived for a long time.", defKu: "ژیان بۆ ماوەیەکێ درێژ.", exEn: "My grandfather is very <span class='hl-word'>old</span>.", exKu: "باپیرێ من گەلەک یێ دانعەمرە." }] },
-            { id: 35, lvl: 'A2', word: "easy", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "ب ساناهی", defEn: "Achieved without great effort.", defKu: "بێ زەحمەت دهێتە کرن.", exEn: "The exam was very <span class='hl-word'>easy</span>.", exKu: "تاقیکرن گەلەک یا ب ساناهی بوو." }] },
-            { id: 36, lvl: 'A2', word: "hard", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "ب زەحمەت", defEn: "Requiring a great deal of endurance or effort.", defKu: "پێدڤی ب بزاڤەکا زۆر هەیە.", exEn: "Learning a language can be <span class='hl-word'>hard</span>.", exKu: "فێربوونا زمانەکی دبیت ب زەحمەت بیت." }] },
-            { id: 37, lvl: 'A2', word: "early", meanings: [{ posEn: "adverb", posKu: "هاوەڵکار", ku: "زوی", defEn: "Happening or done before the usual or expected time.", defKu: "بەری دەمێ دیارکری.", exEn: "I woke up <span class='hl-word'>early</span> today.", exKu: "ئەڤرۆ ئەز زوی ژ خەو ڕابووم." }] },
-            { id: 38, lvl: 'A2', word: "late", meanings: [{ posEn: "adverb", posKu: "هاوەڵکار", ku: "درەنگ", defEn: "Doing something or taking place after the expected time.", defKu: "پشتی دەمێ دیارکری.", exEn: "Don't be <span class='hl-word'>late</span> for class.", exKu: "درەنگ نەچە بۆ وانێ." }] },
-            { id: 39, lvl: 'A2', word: "safe", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "ب سەلامەت", defEn: "Protected from or not exposed to danger or risk.", defKu: "پاراستی ژ مەترسیێ.", exEn: "Keep your money in a <span class='hl-word'>safe</span> place.", exKu: "پارێ خۆ ل جهەکێ ب سەلامەت هەلبگرە." }] },
-            { id: 40, lvl: 'A2', word: "dangerous", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "مەترسیدار", defEn: "Able or likely to cause harm or injury.", defKu: "ئەگەرێ گەهاندنا زیانێ.", exEn: "It is <span class='hl-word'>dangerous</span> to play with fire.", exKu: "یاریکرن ب ئاگری یا مەترسیدارە." }] },
-
-            // --- ئاستێ B1 و B2 ---
-            { id: 41, lvl: 'B1', word: "achieve", meanings: [{ posEn: "verb", posKu: "کار", ku: "ب دەستڤەئینان", defEn: "Successfully bring about or reach by effort.", defKu: "گەهشتن ب ئارمانجەکێ ب ڕێکا بزاڤێ.", exEn: "You can <span class='hl-word'>achieve</span> your goals.", exKu: "تو دشێی ئارمانجێن خۆ ب دەستڤە بینی." }] },
-            { id: 42, lvl: 'B1', word: "visual", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "دیتنی", defEn: "Relating to seeing or sight.", defKu: "گرێدایە ب دیتنێ ڤە.", exEn: "She has a great <span class='hl-word'>visual</span> memory.", exKu: "بیرهاتنەکا دیتنی یا مەزن یا هەی." }] },
-            { id: 61, lvl: 'B2', word: "molecule", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "گەرد", defEn: "A group of atoms bonded together.", defKu: "کۆمەکا ئەتۆمان پێکڤە هاتینە گرێدان.", exEn: "A <span class='hl-word'>molecule</span> of water has two hydrogen atoms.", exKu: "گەردەکا ئاڤێ دوو ئەتۆمێن هایدرۆجینێ یێن هەین." }] },
-            { id: 62, lvl: 'B2', word: "salmon", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "مەسیا سەلەمون", defEn: "A large edible fish.", defKu: "ماسیەکا مەزنە کو دهێتە خارن.", exEn: "<span class='hl-word'>Salmon</span> is very healthy.", exKu: "مەسیا سەلەمون گەلەک یا ب مفایە بۆ ساخلەمیێ." }] }
-        ];
-
-        const uiTranslations = {
-            ku: { 
-                nav_home: "سەرەکی", nav_about: "دەربارەی من", theme_dark: "تاریک (Dark)", theme_black: "ڕەش (Pitch Black)", theme_light: "ڕووناهی (Light)", 
-                ad_title: "ژ بۆ ڕیکلامێ", ad_desc: "پەیوەندیێ ب مە بکە بۆ بەلاڤکرنا ڕیکلاما تە ل ڤێرە", search_ph: "لێگەریان د ناڤ پەیڤان دا...", 
-                level_a1: "ئاستێ A1", level_a2: "ئاستێ A2", level_b1: "ئاستێ B1", level_b2: "ئاستێ B2", about_title: "دەربارەی من", 
-                author_name: "بیرهات (Birhat)", 
-                about_text: "ناڤێ من بیرهاتە، دەرچوویێ بەشێ زمانێ ئینگلیزی مە ل زانکۆیا زاخۆ. باوەریەکا موکوم ب وێ چەندێ هەیە کو زمانێ ئینگلیزی نە تەنێ ئامرازەکێ ئاخفتنێ یە، بەلکو کلیلا ڤەکرنا دەرگەهێن زانست، تەکنەلۆژیا و پێشکەفتنا سەردەمیانە یە، ب تایبەت د ڤی سەردەمێ زیرەکیا دەستکرد (AI) دا. هەر ژ مێژە خەونا من ئەوە کو ب ڕێکا ڤی پڕۆژەی هاریکاریا گەنجێن کورد بکەم بۆ فێربوونا ڤی زمانێ جیهانی، دا کو پاشەڕۆژەکا گەشتر بۆ خۆ ئاڤا بکەن. هیڤیدارم ئەڤ ماڵپەڕە ببێتە پردەک بۆ گەهشتن ب ئارمانجێن وە.",
-                modal_welcome: "بخێربهێی بۆ وێبسایتێ مە!",
-                modal_desc: "ئەڤ وێبسایتە هێشتا یێ د قۆناغا کارکرنێ دا (بێتا یە). ل دەمەکێ نێزیک چاڤەرێ بن.",
-                modal_sponsor_text: "ژ بۆ سپۆنسەرکرنێ، پەیوەندیێ ب ڤێ ژمارێ بکەن:",
-                modal_btn: "باشە، تێگەهشتم"
-            },
-            en: { 
-                nav_home: "Home", nav_about: "About Me", theme_dark: "Dark", theme_black: "Pitch Black", theme_light: "Light", 
-                ad_title: "For Advertising", ad_desc: "Contact us to place your ad here", search_ph: "Search words...", 
-                level_a1: "Level A1", level_a2: "Level A2", level_b1: "Level B1", level_b2: "Level B2", about_title: "About Me", 
-                author_name: "Birhat", 
-                about_text: "My name is Birhat, an English Language graduate from the University of Zakho. I strongly believe that English is not just a communication tool, but the key to science, technology, and modern progress, especially in this era of AI. It has always been my dream to help Kurdish youth learn this global language to build a brighter future. I hope this website serves as a bridge to your goals.",
-                modal_welcome: "Welcome to our website!",
-                modal_desc: "This website is currently under construction (Beta). Wait for it soon.",
-                modal_sponsor_text: "For sponsorship, please contact this number:",
-                modal_btn: "Okay, got it"
-            },
-            ar: { 
-                nav_home: "الرئيسية", nav_about: "حول", theme_dark: "داكن (Dark)", theme_black: "أسود (Pitch Black)", theme_light: "مضيء (Light)", 
-                ad_title: "للإعلان", ad_desc: "تواصل معنا لوضع إعلانك هنا", search_ph: "ابحث عن الكلمات...", 
-                level_a1: "مستوى A1", level_a2: "مستوى A2", level_b1: "مستوى B1", level_b2: "مستوى B2", about_title: "حول", 
-                author_name: "بيرهات (Birhat)", 
-                about_text: "اسمي بيرهات، خريج قسم اللغة الإنجليزية من جامعة زاخو. أؤمن بشدة أن اللغة الإنجليزية ليست مجرد أداة تواصل، بل هي مفتاح العلم والتكنولوجيا والتقدم الحديث، خاصة في عصر الذكاء الاصطناعي. لطالما كان حلمي مساعدة الشباب الكوردي على تعلم هذه اللغة العالمية لبناء مستقبل أكثر إشراقاً. آمل أن يكون هذا الموقع جسراً لتحقيق أهدافكم.",
-                modal_welcome: "مرحباً بك في موقعنا!",
-                modal_desc: "هذا الموقع لا يزال قيد الإنشاء (نسخة تجريبية). انتظرونا قريباً.",
-                modal_sponsor_text: "للرعاية والإعلان، يرجى التواصل على هذا الرقم:",
-                modal_btn: "حسناً، فهمت"
-            }
-        };
-
-        let currentLang = 'ku';
-
-        // --- مەنتیقێ پەنجەرەیا موبایلێ (Mobile Popup Logic) ---
-        window.onload = function() {
-            // ئەگەر شاشەیا موبایلێ بیت (768px یان کێمتر) و بەری نوکە نەهاتبیتە نیشاندان
-            if (window.innerWidth <= 768 && !sessionStorage.getItem('mobileWelcomeShown')) {
-                setTimeout(() => {
-                    document.getElementById('mobileWelcomeModal').style.display = 'flex';
-                }, 500); // نیڤ چرکەیا پاشخست دا کو ستایل باش Load ببیت
-            }
-        };
-
-        function closeModal() {
-            document.getElementById('mobileWelcomeModal').style.display = 'none';
-            // تۆمارکرن د Session دا دا کو هەر جار ئەزعاچ نەبیت ب کلیککرنێ
-            sessionStorage.setItem('mobileWelcomeShown', 'true');
-        }
-        // ----------------------------------------------------
-
-        function toggleMenu() { document.getElementById('drawerMenu').classList.toggle('open'); document.getElementById('drawerOverlay').classList.toggle('open'); }
-        function showPage(pageId) { document.querySelectorAll('.page').forEach(page => page.classList.remove('active')); document.getElementById(pageId).classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-        function changeTheme() { document.documentElement.setAttribute('data-theme', document.getElementById('themeSelect').value); }
-
-        function changeLanguage() {
-            currentLang = document.getElementById('langSelect').value;
-            const isRtl = (currentLang === 'ku' || currentLang === 'ar');
-            document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
-            document.documentElement.setAttribute('lang', currentLang);
-
-            const arrowClass = isRtl ? 'fa-arrow-right' : 'fa-arrow-left';
-            document.getElementById('backIconLevel').className = `fas ${arrowClass}`;
-            document.getElementById('backIconWord').className = `fas ${arrowClass}`;
-            document.getElementById('backIconAbout').className = `fas ${arrowClass}`;
-
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (uiTranslations[currentLang][key]) el.innerText = uiTranslations[currentLang][key];
-            });
-            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-                const key = el.getAttribute('data-i18n-ph');
-                if (uiTranslations[currentLang][key]) el.placeholder = uiTranslations[currentLang][key];
-            });
+        // ڤەکرن و گرتنا مینیویێ
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
         }
 
-        function openLevel(levelCode, levelName, startNum, endNum) {
-            document.getElementById('current-level-title').innerText = levelName;
-            const wordsListDiv = document.getElementById('words-list');
-            wordsListDiv.innerHTML = '';
-
-            const levelWords = dictionary.filter(w => w.lvl === levelCode);
-            if(levelWords.length === 0) {
-                wordsListDiv.innerHTML = `<p style="text-align:center; color:var(--text-muted); margin-top:30px;">بۆ ڤی ئاستی هێشتا پەیڤ نەهاتینە زێدەکرن.</p>`;
-            } else {
-                levelWords.forEach(obj => {
-                    const div = document.createElement('div');
-                    div.className = 'word-item';
-                    div.onclick = () => openWordDetail(obj);
-                    const previewKu = obj.meanings.map(m => m.ku).join('، ');
-                    div.innerHTML = `
-                        <span class="word-en-title">${obj.id}. ${obj.word}</span>
-                        <span class="word-ku-preview">${previewKu}</span>
-                    `;
-                    wordsListDiv.appendChild(div);
-                });
-            }
-            showPage('level-view');
-        }
-
-        function openWordDetail(wordObj) {
-            document.getElementById('detail-word-num').innerText = `# ${wordObj.id}`;
-            const container = document.getElementById('meanings-container');
-            container.innerHTML = '';
-
-            wordObj.meanings.forEach(m => {
-                const plainExEn = m.exEn.replace(/<[^>]*>?/gm, ''); 
-
-                const card = document.createElement('div');
-                card.className = 'meaning-card';
-                card.innerHTML = `
-                    <div class="mc-header">
-                        <div class="mc-word-en">
-                            <i class="fas fa-volume-up play-icon" onclick="playSound('${wordObj.word}', '${plainExEn}')"></i>
-                            ${wordObj.word}
-                        </div>
-                        <div class="mc-word-ku">${m.ku}</div>
-                    </div>
-                    <div class="mc-pos">
-                        <span class="pos-en">${m.posEn}</span>
-                        <span>${m.posKu}</span>
-                    </div>
-                    <div class="mc-def-en">${m.defEn}</div>
-                    <div class="mc-def-ku">${m.defKu}</div>
-                    <div class="mc-divider"></div>
-                    <div class="mc-ex-label">Example</div>
-                    <div class="mc-ex-en">${m.exEn}</div>
-                    <div class="mc-ex-ku">${m.exKu}</div>
-                `;
-                container.appendChild(card);
-            });
-
-            showPage('word-detail');
-        }
-
-        function searchWords() {
-            const val = document.getElementById('searchInput').value.trim().toLowerCase();
-            const levelsContainer = document.getElementById('levels-container');
-            const searchResults = document.getElementById('search-results');
+        // گۆهڕینا دۆخێ تاریک / ڕووناکی
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
+            body.classList.toggle('light-mode');
             
-            if(val === "") {
-                levelsContainer.style.display = 'block'; searchResults.style.display = 'none'; return;
-            }
-
-            levelsContainer.style.display = 'none'; searchResults.style.display = 'block'; searchResults.innerHTML = '';
-
-            const filtered = dictionary.filter(obj => obj.word.toLowerCase().includes(val) || obj.meanings.some(m => m.ku.includes(val)));
-
-            if(filtered.length === 0) {
-                searchResults.innerHTML = '<p style="text-align:center; color:var(--text-muted); margin-top:30px;">چ ئەنجام نەهاتنە دیتن.</p>';
+            if (body.classList.contains('light-mode')) {
+                icon.className = 'fa-solid fa-sun';
             } else {
-                filtered.forEach(obj => {
-                    const div = document.createElement('div');
-                    div.className = 'word-item';
-                    div.onclick = () => openWordDetail(obj);
-                    const previewKu = obj.meanings.map(m => m.ku).join('، ');
-                    div.innerHTML = `
-                        <span class="word-en-title">${obj.word} <span style="font-size:12px; font-weight:normal; color:var(--primary);">(${obj.lvl})</span></span>
-                        <span class="word-ku-preview">${previewKu}</span>
-                    `;
-                    searchResults.appendChild(div);
-                });
+                icon.className = 'fa-solid fa-moon';
             }
         }
 
-        function playSound(word, example) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); 
-                let wordMsg = new SpeechSynthesisUtterance(word);
-                wordMsg.lang = 'en-US';
-                window.speechSynthesis.speak(wordMsg);
-                
-                let exMsg = new SpeechSynthesisUtterance(example);
-                exMsg.lang = 'en-US';
-                wordMsg.onend = () => { setTimeout(() => { window.speechSynthesis.speak(exMsg); }, 400); };
+        // ئیفێکتێ نڤیسینێ یێ شێوازێ چات جی پی تی (Typewriter Effect)
+        let typingTimeout;
+        
+        function startTranslation() {
+            const input = document.getElementById('englishInput').value.trim();
+            const outputBox = document.getElementById('kurdishOutput');
+            
+            // پاقژکرنا هەر نڤیسینەکا بەرێ یان ڕاگرتنا ئیفێکتێ بەرێ
+            clearTimeout(typingTimeout);
+            outputBox.value = "";
+
+            if (input === "") {
+                outputBox.value = "هیڤییە پێشتر تێکستەکێ بنڤیسە دا کو وەرگێڕان بهێتە کرن...";
+                return;
             }
+
+            const message = "کار یێ ل سەر دهێتە کرن... ل دەمەک نێزیک دێ ب باشترین شێواز کەڤیتە د خزمەتا هەوە دا.";
+            typeWriter(outputBox, message, 0);
         }
 
-        changeLanguage();
+        // فەنکشنی نڤیسینا پیت ب پیت
+        function typeWriter(element, text, index) {
+            if (index < text.length) {
+                element.value += text.charAt(index);
+                typingTimeout = setTimeout(() => {
+                    typeWriter(element, text, index + 1);
+                }, 40); // خێراییا نڤیسینێ (40 ملی چرکە بۆ هەر پیتەکێ)
+            }
+        }
     </script>
 </body>
 </html>
