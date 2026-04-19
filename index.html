@@ -11,35 +11,42 @@
             src: local('Rabar_041');
         }
 
+        /* ستایلێ نوی و سەردەمیانە */
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --card-border: #333333;
-            --text-main: #f0f0f0;
-            --text-muted: #aaaaaa;
-            --gold: #d4af37;
-            --gold-light: #fbe69b;
-            --accent-purple: #9d88ff;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-light: #60a5fa;
+            --gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            --gradient-hover: linear-gradient(135deg, #2563eb, #7c3aed);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
+        
         [data-theme="black"] {
             --bg-color: #000000;
             --card-bg: #0a0a0a;
-            --card-border: #1f1f1f;
-            --text-main: #e0e0e0;
-            --text-muted: #777777;
-            --gold: #c5a028;
-            --gold-light: #ffd700;
-            --accent-purple: #b3a3ff;
+            --card-border: #1a1a1a;
+            --text-main: #ffffff;
+            --text-muted: #666666;
+            --primary: #8b5cf6;
+            --primary-light: #a78bfa;
+            --gradient: linear-gradient(135deg, #4c1d95, #6d28d9);
+            --shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.05);
         }
+        
         [data-theme="light"] {
-            --bg-color: #f4f7f6;
+            --bg-color: #f1f5f9;
             --card-bg: #ffffff;
-            --card-border: #dddddd;
-            --text-main: #111111;
-            --text-muted: #555555;
-            --gold: #b8860b;
-            --gold-light: #d4af37;
-            --accent-purple: #6a4cff;
+            --card-border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --gradient: linear-gradient(135deg, #4f46e5, #ec4899);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -48,121 +55,192 @@
             padding: 0;
             font-family: 'Rabar_041', Tahoma, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
-        body { background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            overflow-x: hidden; 
+            line-height: 1.6; 
+        }
 
         /* Header */
         header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 20px; background-color: var(--card-bg);
-            border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; direction: ltr; 
+            padding: 18px 25px; background-color: var(--card-bg);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky; top: 0; z-index: 100; direction: ltr; 
         }
-        .header-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .logo-icon { font-size: 28px; color: var(--gold); }
-        .logo-text { font-size: 24px; font-weight: bold; background: linear-gradient(45deg, var(--gold), var(--gold-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .menu-btn { background: none; border: none; color: var(--text-main); font-size: 24px; cursor: pointer; }
+        .header-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-icon { font-size: 28px; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo-text { font-size: 26px; font-weight: 900; letter-spacing: 1px; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .menu-btn { background: none; border: none; color: var(--text-main); font-size: 24px; cursor: pointer; transition: transform 0.2s;}
+        .menu-btn:active { transform: scale(0.9); }
 
         /* Drawer Menu */
-        .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
-        [dir="rtl"] .drawer-menu { right: -300px; border-left: 2px solid var(--gold); }
-        [dir="ltr"] .drawer-menu { left: -300px; border-right: 2px solid var(--gold); }
-        .drawer-menu { position: fixed; top: 0; width: 280px; height: 100%; background-color: var(--card-bg); z-index: 1000; transition: 0.4s ease; display: flex; flex-direction: column; padding: 30px 20px; }
+        .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s; }
+        [dir="rtl"] .drawer-menu { right: -320px; }
+        [dir="ltr"] .drawer-menu { left: -320px; }
+        .drawer-menu { position: fixed; top: 0; width: 300px; height: 100%; background-color: var(--card-bg); z-index: 1000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; padding: 40px 25px; box-shadow: var(--shadow); }
         [dir="rtl"] .drawer-menu.open { right: 0; }
         [dir="ltr"] .drawer-menu.open { left: 0; }
         .drawer-overlay.open { display: block; opacity: 1; }
-        .drawer-logo { text-align: center; margin-bottom: 30px; font-size: 28px; font-weight: bold; color: var(--gold); }
+        .drawer-logo { text-align: center; margin-bottom: 40px; font-size: 32px; font-weight: bold; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .drawer-links { list-style: none; flex-grow: 1; }
         .drawer-links li { margin-bottom: 15px; }
-        .drawer-links a { color: var(--text-main); text-decoration: none; font-size: 18px; display: flex; align-items: center; gap: 15px; padding: 10px; border-radius: 8px; }
-        .drawer-links a:hover { background: rgba(212,175,55,0.1); color: var(--gold); }
-        .settings-group { margin-top: auto; border-top: 1px solid var(--card-border); padding-top: 20px; }
-        .settings-group select { width: 100%; padding: 10px; margin-bottom: 10px; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--card-border); border-radius: 8px; font-family: 'Rabar_041', sans-serif; font-size: 16px; outline: none; }
+        .drawer-links a { color: var(--text-main); text-decoration: none; font-size: 18px; display: flex; align-items: center; gap: 15px; padding: 12px 15px; border-radius: 12px; transition: 0.3s; }
+        .drawer-links a:hover { background: var(--gradient); color: #fff; transform: translateX(5px); }
+        .drawer-links a:hover i { color: #fff; }
+        
+        .settings-group { margin-top: auto; border-top: 1px solid var(--card-border); padding-top: 25px; }
+        .settings-group select { width: 100%; padding: 12px; margin-bottom: 12px; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--card-border); border-radius: 10px; font-family: 'Rabar_041', sans-serif; font-size: 16px; outline: none; cursor: pointer; }
+        .settings-group select:focus { border-color: var(--primary); }
 
-        .page { display: none; padding: 20px; max-width: 800px; margin: auto; animation: fadeIn 0.4s; }
+        .page { display: none; padding: 25px; max-width: 800px; margin: auto; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Ad Banner */
-        .ad-banner { background: linear-gradient(135deg, var(--card-bg) 0%, rgba(212, 175, 55, 0.1) 100%); border: 1px solid var(--gold); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1); }
-        .ad-banner h3 { color: var(--gold); font-size: 22px; margin-bottom: 5px; }
-        .ad-banner p { font-size: 15px; color: var(--text-muted); margin-bottom: 15px; }
-        .ad-contact { display: inline-block; padding: 10px 20px; border-radius: 25px; background: var(--gold); color: #000; font-weight: bold; font-size: 16px; text-decoration: none; direction: ltr; box-shadow: 0 4px 10px rgba(212,175,55,0.3); }
+        /* Ad Banner (New Style) */
+        .ad-banner { background: var(--card-bg); border-radius: 20px; padding: 25px; text-align: center; margin-bottom: 30px; box-shadow: var(--shadow); position: relative; overflow: hidden; border: 1px solid var(--card-border); }
+        .ad-banner::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--gradient); }
+        .ad-banner h3 { color: var(--text-main); font-size: 22px; margin-bottom: 8px; }
+        .ad-banner p { font-size: 15px; color: var(--text-muted); margin-bottom: 20px; }
+        .ad-contact { display: inline-flex; align-items: center; gap: 10px; padding: 12px 25px; border-radius: 30px; background: var(--gradient); color: #fff; font-weight: bold; font-size: 16px; text-decoration: none; direction: ltr; transition: 0.3s; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+        .ad-contact:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6); }
 
         /* Search */
-        .search-box { display: flex; align-items: center; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 5px 15px; margin-bottom: 20px; }
-        .search-box:focus-within { border-color: var(--gold); }
-        .search-box input { background: transparent; border: none; color: var(--text-main); padding: 12px; width: 100%; font-size: 16px; outline: none; }
-        .search-box i { color: var(--text-muted); }
+        .search-box { display: flex; align-items: center; background: var(--card-bg); border: 2px solid var(--card-border); border-radius: 16px; padding: 5px 20px; margin-bottom: 30px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .search-box:focus-within { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+        .search-box input { background: transparent; border: none; color: var(--text-main); padding: 15px; width: 100%; font-size: 16px; outline: none; }
+        .search-box i { color: var(--primary); font-size: 20px; }
 
         /* Levels */
-        .level-card { background: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--card-border); cursor: pointer; display: flex; flex-direction: column; transition: 0.2s; }
-        .level-card:hover { border-color: var(--gold); }
-        .level-title { font-size: 20px; font-weight: bold; color: var(--text-main); margin-bottom: 10px; direction: ltr; text-align: left; }
-        .level-info { display: flex; justify-content: space-between; color: var(--text-muted); font-size: 14px; direction: ltr; }
+        .level-card { background: var(--card-bg); border-radius: 16px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--card-border); cursor: pointer; display: flex; flex-direction: column; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .level-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--shadow); }
+        .level-card::after { content: '\f054'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 25px; top: 50%; transform: translateY(-50%); color: var(--card-border); font-size: 20px; transition: 0.3s; }
+        [dir="rtl"] .level-card::after { left: 25px; right: auto; content: '\f053'; }
+        .level-card:hover::after { color: var(--primary); }
+        
+        .level-title { font-size: 24px; font-weight: 900; color: var(--text-main); margin-bottom: 10px; direction: ltr; text-align: left; }
+        .level-info { display: flex; justify-content: space-between; color: var(--text-muted); font-size: 15px; direction: ltr; padding-right: 30px; }
+        [dir="rtl"] .level-info { padding-right: 0; padding-left: 30px; }
 
         /* Word List */
-        .word-item { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 10px; border: 1px solid var(--card-border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-        .word-item:hover { border-color: var(--gold); }
+        .word-item { background: var(--card-bg); border-radius: 14px; padding: 18px 20px; margin-bottom: 12px; border: 1px solid var(--card-border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .word-item:hover { border-color: var(--primary); background: rgba(59, 130, 246, 0.05); transform: scale(1.01); }
         .word-en-title { font-size: 18px; font-weight: bold; color: var(--text-main); direction: ltr; }
-        .word-ku-preview { color: var(--text-muted); font-size: 14px; }
+        .word-ku-preview { color: var(--text-muted); font-size: 15px; }
 
         /* Word Detail */
-        .nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-        .back-btn { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
-        .word-number { color: var(--text-muted); font-size: 16px; }
+        .nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; }
+        .back-btn { background: var(--card-bg); width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--card-border); color: var(--text-main); font-size: 18px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;}
+        .back-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .word-number { background: var(--card-bg); padding: 8px 15px; border-radius: 20px; border: 1px solid var(--card-border); color: var(--primary); font-weight: bold; font-size: 14px; }
 
-        .image-placeholder { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--card-border); height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--card-border); margin-bottom: 20px; font-size: 20px; font-weight: bold; letter-spacing: 2px; }
-        .image-placeholder i { font-size: 60px; margin-bottom: 10px; }
+        .image-placeholder { background: var(--card-bg); border-radius: 20px; border: 2px dashed var(--card-border); height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); margin-bottom: 25px; font-size: 18px; letter-spacing: 1px; }
+        .image-placeholder i { font-size: 50px; margin-bottom: 15px; color: var(--card-border); }
 
-        .meaning-card { background: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--card-border); }
-        .mc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-        .mc-word-en { font-size: 28px; font-weight: bold; color: var(--accent-purple); display: flex; align-items: center; gap: 10px; direction: ltr; }
-        .mc-word-ku { font-size: 24px; font-weight: bold; color: var(--accent-purple); }
-        .mc-pos { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-muted); margin-bottom: 15px; }
+        .meaning-card { background: var(--card-bg); border-radius: 20px; padding: 25px; margin-bottom: 25px; border: 1px solid var(--card-border); box-shadow: var(--shadow); }
+        .mc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .mc-word-en { font-size: 32px; font-weight: 900; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 15px; direction: ltr; }
+        .mc-word-ku { font-size: 26px; font-weight: bold; color: var(--text-main); }
+        .mc-pos { display: inline-flex; gap: 10px; background: rgba(59, 130, 246, 0.1); padding: 5px 12px; border-radius: 8px; font-size: 13px; color: var(--primary); margin-bottom: 20px; font-weight: bold;}
         .pos-en { direction: ltr; }
         
-        .mc-divider { height: 1px; background: var(--card-border); margin: 15px 0; }
+        .mc-divider { height: 1px; background: var(--card-border); margin: 20px 0; }
         
-        .mc-def-en { font-size: 16px; color: var(--text-main); margin-bottom: 10px; direction: ltr; text-align: left; }
-        .mc-def-ku { font-size: 16px; color: var(--text-main); text-align: right; }
+        .mc-def-en { font-size: 17px; color: var(--text-main); margin-bottom: 8px; direction: ltr; text-align: left; }
+        .mc-def-ku { font-size: 17px; color: var(--text-muted); text-align: right; }
         
-        .mc-ex-label { font-size: 14px; color: var(--text-main); font-weight: bold; margin-bottom: 10px; direction: ltr; text-align: left;}
-        .mc-ex-en { font-size: 16px; color: var(--text-main); margin-bottom: 10px; direction: ltr; text-align: left; }
-        .mc-ex-ku { font-size: 16px; color: var(--text-muted); text-align: right; }
+        .mc-ex-label { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: bold; margin-bottom: 12px; direction: ltr; text-align: left;}
+        .mc-ex-en { font-size: 18px; color: var(--text-main); margin-bottom: 8px; direction: ltr; text-align: left; font-style: italic; border-left: 3px solid var(--primary); padding-left: 15px;}
+        .mc-ex-ku { font-size: 17px; color: var(--text-muted); text-align: right; }
 
         /* Highlight Word in Example */
-        .hl-word { color: var(--gold-light); font-weight: bold; text-decoration: underline; text-decoration-color: var(--gold-light); }
+        .hl-word { color: var(--primary-light); font-weight: bold; text-decoration: underline; text-decoration-color: var(--primary); text-underline-offset: 4px; }
 
-        .play-icon { cursor: pointer; transition: 0.2s; }
-        .play-icon:hover { color: var(--gold); }
+        .play-icon { cursor: pointer; transition: 0.2s; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 24px;}
+        .play-icon:hover { opacity: 0.7; transform: scale(1.1); }
 
         /* About */
-        .profile-img { width: 100px; height: 100px; background: var(--card-bg); border: 2px solid var(--gold); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--gold); }
-        .about-text { font-size: 16px; color: var(--text-muted); margin-bottom: 30px; text-align: justify; line-height: 1.8; }
-        .social-btn { background: var(--card-bg); color: var(--text-main); padding: 15px; border-radius: 10px; text-decoration: none; border: 1px solid var(--card-border); font-size: 16px; display: flex; justify-content: space-between; margin-bottom: 15px; transition: 0.3s; }
-        .social-btn:hover { border-color: var(--gold); }
-        .social-handle { color: var(--text-muted); direction: ltr;}
+        .profile-img { width: 120px; height: 120px; background: var(--card-bg); border: 3px solid var(--primary); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; font-size: 50px; color: var(--primary); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2); }
+        .about-text { font-size: 16px; color: var(--text-muted); margin-bottom: 35px; text-align: justify; line-height: 1.9; padding: 0 10px; }
+        .social-btn { background: var(--card-bg); color: var(--text-main); padding: 18px 20px; border-radius: 16px; text-decoration: none; border: 1px solid var(--card-border); font-size: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; transition: 0.3s; font-weight: bold; }
+        .social-btn:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .social-handle { color: var(--text-muted); direction: ltr; font-weight: normal;}
+
+        /* --- MOBILE POPUP MODAL (NEW) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
+            z-index: 2000; display: none; align-items: center; justify-content: center;
+            padding: 20px; animation: fadeIn 0.3s;
+        }
+        .modal-box {
+            background: var(--card-bg); border-radius: 24px; padding: 30px 20px;
+            text-align: center; max-width: 400px; width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); border: 1px solid var(--card-border);
+            position: relative; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-icon {
+            font-size: 50px; color: var(--primary); margin-bottom: 15px;
+            background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .modal-box h3 { font-size: 22px; color: var(--text-main); margin-bottom: 10px; }
+        .modal-box p { font-size: 15px; color: var(--text-muted); margin-bottom: 25px; line-height: 1.6; }
+        .modal-sponsor {
+            background: rgba(59, 130, 246, 0.05); padding: 15px; border-radius: 16px;
+            margin-bottom: 25px; border: 1px dashed var(--primary);
+        }
+        .modal-sponsor span { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
+        .modal-sponsor a {
+            display: inline-block; color: var(--primary-light); font-weight: bold;
+            font-size: 18px; text-decoration: none; direction: ltr;
+        }
+        .modal-btn {
+            background: var(--gradient); color: #fff; border: none;
+            padding: 14px 30px; font-size: 16px; font-weight: bold;
+            border-radius: 30px; cursor: pointer; width: 100%; transition: 0.3s;
+        }
+        .modal-btn:active { transform: scale(0.95); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
     </style>
 </head>
 <body>
 
+    <div id="mobileWelcomeModal" class="modal-overlay">
+        <div class="modal-box">
+            <i class="fas fa-tools modal-icon"></i>
+            <h3 data-i18n="modal_welcome">بخێربهێی بۆ وێبسایتێ مە!</h3>
+            <p data-i18n="modal_desc">ئەڤ وێبسایتە هێشتا یێ د قۆناغا کارکرنێ دا (بێتا یە). ل دەمەکێ نێزیک چاڤەرێ بن.</p>
+            
+            <div class="modal-sponsor">
+                <span data-i18n="modal_sponsor_text">ژ بۆ سپۆنسەرکرنێ، پەیوەندیێ ب ڤێ ژمارێ بکەن:</span>
+                <a href="https://t.me/birhatkrd"><i class="fab fa-telegram"></i> +44 7543 151 831 🇬🇧</a>
+            </div>
+
+            <button class="modal-btn" onclick="closeModal()" data-i18n="modal_btn">باشە، تێگەهشتم</button>
+        </div>
+    </div>
+
     <header>
         <a href="#" class="header-logo" onclick="showPage('home')">
-            <i class="fas fa-book-reader logo-icon"></i>
+            <i class="fas fa-layer-group logo-icon"></i>
             <span class="logo-text">Kurdeng</span>
         </a>
-        <button class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <button class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars-staggered"></i></button>
     </header>
 
     <div class="drawer-overlay" id="drawerOverlay" onclick="toggleMenu()"></div>
     <nav class="drawer-menu" id="drawerMenu">
         <div class="drawer-logo">Kurdeng</div>
         <ul class="drawer-links">
-            <li><a href="#" onclick="showPage('home'); toggleMenu();"><i class="fas fa-home"></i> <span data-i18n="nav_home">سەرەکی</span></a></li>
-            <li><a href="#" onclick="showPage('about'); toggleMenu();"><i class="fas fa-info-circle"></i> <span data-i18n="nav_about">دەربارەی من</span></a></li>
+            <li><a href="#" onclick="showPage('home'); toggleMenu();"><i class="fas fa-house"></i> <span data-i18n="nav_home">سەرەکی</span></a></li>
+            <li><a href="#" onclick="showPage('about'); toggleMenu();"><i class="fas fa-circle-info"></i> <span data-i18n="nav_about">دەربارەی من</span></a></li>
         </ul>
         <div class="settings-group">
             <select id="themeSelect" onchange="changeTheme()">
@@ -183,7 +261,7 @@
             <h3 data-i18n="ad_title">ژ بۆ ڕیکلامێ</h3>
             <p data-i18n="ad_desc">پەیوەندیێ ب مە بکە بۆ بەلاڤکرنا ڕیکلاما تە ل ڤێرە</p>
             <a href="https://t.me/birhatkrd" class="ad-contact">
-                <i class="fab fa-telegram"></i> +44 7543 151 831 🇬🇧
+                <i class="fab fa-telegram-plane"></i> +44 7543 151 831 🇬🇧
             </a>
         </div>
 
@@ -217,9 +295,8 @@
     <main id="level-view" class="page">
         <div class="nav-bar">
             <button class="back-btn" onclick="showPage('home')"><i class="fas fa-arrow-right" id="backIconLevel"></i></button>
-            <h2 id="current-level-title" style="direction:ltr;">Beginner</h2>
-            <div style="width:20px;"></div>
-        </div>
+            <h2 id="current-level-title" style="direction:ltr; font-weight:900;">Beginner</h2>
+            <div style="width:45px;"></div> </div>
         <div id="words-list"></div>
     </main>
 
@@ -240,34 +317,34 @@
     <main id="about" class="page">
         <div class="nav-bar">
             <button class="back-btn" onclick="showPage('home')"><i class="fas fa-arrow-right" id="backIconAbout"></i></button>
-            <h2 data-i18n="about_title">دەربارەی من</h2>
-            <div style="width:20px;"></div>
+            <h2 data-i18n="about_title" style="font-weight:900;">دەربارەی من</h2>
+            <div style="width:45px;"></div>
         </div>
         
         <div style="text-align: center;">
-            <div class="profile-img"><i class="fas fa-user-tie"></i></div>
-            <h2 style="color: var(--gold); margin-bottom: 15px;" data-i18n="author_name">بیرهات (Birhat)</h2>
+            <div class="profile-img"><i class="fas fa-user-astronaut"></i></div>
+            <h2 style="color: var(--text-main); margin-bottom: 15px; font-weight:900;" data-i18n="author_name">بیرهات (Birhat)</h2>
             <p class="about-text" data-i18n="about_text">
                 ناڤێ من بیرهاتە، دەرچوویێ بەشێ زمانێ ئینگلیزی مە ل زانکۆیا زاخۆ. باوەریەکا موکوم ب وێ چەندێ هەیە کو زمانێ ئینگلیزی نە تەنێ ئامرازەکێ ئاخفتنێ یە، بەلکو کلیلا ڤەکرنا دەرگەهێن زانست، تەکنەلۆژیا و پێشکەفتنا سەردەمیانە یە، ب تایبەت د ڤی سەردەمێ زیرەکیا دەستکرد (AI) دا. هەر ژ مێژە خەونا من ئەوە کو ب ڕێکا ڤی پڕۆژەی هاریکاریا گەنجێن کورد بکەم بۆ فێربوونا ڤی زمانێ جیهانی، دا کو پاشەڕۆژەکا گەشتر بۆ خۆ ئاڤا بکەن. هیڤیدارم ئەڤ ماڵپەڕە ببێتە پردەک بۆ گەهشتن ب ئارمانجێن وە.
             </p>
 
             <a href="#" class="social-btn">
-                <span><i class="fab fa-snapchat-ghost" style="color: #fffc00; -webkit-text-stroke: 1px #000;"></i> Snapchat</span>
+                <span><i class="fab fa-snapchat-ghost" style="color: #fffc00; -webkit-text-stroke: 1px #000; font-size:20px; vertical-align:middle; margin-right:8px;"></i> Snapchat</span>
                 <span class="social-handle">@birhatkrd</span>
             </a>
             <a href="#" class="social-btn">
-                <span><i class="fab fa-instagram" style="color: #E1306C;"></i> Instagram</span>
+                <span><i class="fab fa-instagram" style="color: #E1306C; font-size:20px; vertical-align:middle; margin-right:8px;"></i> Instagram</span>
                 <span class="social-handle">@birhatkrd</span>
             </a>
             <a href="#" class="social-btn">
-                <span><i class="fab fa-telegram-plane" style="color: #0088cc;"></i> Telegram</span>
+                <span><i class="fab fa-telegram-plane" style="color: #0088cc; font-size:20px; vertical-align:middle; margin-right:8px;"></i> Telegram</span>
                 <span class="social-handle">@birhatkrd</span>
             </a>
         </div>
     </main>
 
     <script>
-        // داتابەیسا پەیڤان دگەل ژمارەکرنا تەسەلسولی (ID) و دیارکرنا پەیڤێ د نموونێ دا ب کلاسێ <span class='hl-word'>
+        // داتابەیسا پەیڤان
         const dictionary = [
             // --- ئاستێ A1 (٢٠ پەیڤ) ---
             { id: 1, lvl: 'A1', word: "book", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "پەرتووک", defEn: "A written work or composition.", defKu: "کارەکێ نڤێسای یان چاپکری.", exEn: "I am reading a good <span class='hl-word'>book</span>.", exKu: "ئەز یێ پەرتووکەکا باش دخوینم." }] },
@@ -313,7 +390,7 @@
             { id: 39, lvl: 'A2', word: "safe", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "ب سەلامەت", defEn: "Protected from or not exposed to danger or risk.", defKu: "پاراستی ژ مەترسیێ.", exEn: "Keep your money in a <span class='hl-word'>safe</span> place.", exKu: "پارێ خۆ ل جهەکێ ب سەلامەت هەلبگرە." }] },
             { id: 40, lvl: 'A2', word: "dangerous", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "مەترسیدار", defEn: "Able or likely to cause harm or injury.", defKu: "ئەگەرێ گەهاندنا زیانێ.", exEn: "It is <span class='hl-word'>dangerous</span> to play with fire.", exKu: "یاریکرن ب ئاگری یا مەترسیدارە." }] },
 
-            // --- ئاستێ B1 و B2 (بۆ نموونە چەند پەیڤەک هاتینە دانان) ---
+            // --- ئاستێ B1 و B2 ---
             { id: 41, lvl: 'B1', word: "achieve", meanings: [{ posEn: "verb", posKu: "کار", ku: "ب دەستڤەئینان", defEn: "Successfully bring about or reach by effort.", defKu: "گەهشتن ب ئارمانجەکێ ب ڕێکا بزاڤێ.", exEn: "You can <span class='hl-word'>achieve</span> your goals.", exKu: "تو دشێی ئارمانجێن خۆ ب دەستڤە بینی." }] },
             { id: 42, lvl: 'B1', word: "visual", meanings: [{ posEn: "adjective", posKu: "ئاوەڵناو", ku: "دیتنی", defEn: "Relating to seeing or sight.", defKu: "گرێدایە ب دیتنێ ڤە.", exEn: "She has a great <span class='hl-word'>visual</span> memory.", exKu: "بیرهاتنەکا دیتنی یا مەزن یا هەی." }] },
             { id: 61, lvl: 'B2', word: "molecule", meanings: [{ posEn: "noun", posKu: "ناڤ", ku: "گەرد", defEn: "A group of atoms bonded together.", defKu: "کۆمەکا ئەتۆمان پێکڤە هاتینە گرێدان.", exEn: "A <span class='hl-word'>molecule</span> of water has two hydrogen atoms.", exKu: "گەردەکا ئاڤێ دوو ئەتۆمێن هایدرۆجینێ یێن هەین." }] },
@@ -321,12 +398,59 @@
         ];
 
         const uiTranslations = {
-            ku: { nav_home: "سەرەکی", nav_about: "دەربارەی من", theme_dark: "تاریک (Dark)", theme_black: "ڕەش (Pitch Black)", theme_light: "ڕووناهی (Light)", ad_title: "ژ بۆ ڕیکلامێ", ad_desc: "پەیوەندیێ ب مە بکە بۆ بەلاڤکرنا ڕیکلاما تە ل ڤێرە", search_ph: "لێگەریان د ناڤ پەیڤان دا...", level_a1: "ئاستێ A1", level_a2: "ئاستێ A2", level_b1: "ئاستێ B1", level_b2: "ئاستێ B2", about_title: "دەربارەی من", author_name: "بیرهات (Birhat)", about_text: "ناڤێ من بیرهاتە، دەرچوویێ بەشێ زمانێ ئینگلیزی مە ل زانکۆیا زاخۆ. باوەریەکا موکوم ب وێ چەندێ هەیە کو زمانێ ئینگلیزی نە تەنێ ئامرازەکێ ئاخفتنێ یە، بەلکو کلیلا ڤەکرنا دەرگەهێن زانست، تەکنەلۆژیا و پێشکەفتنا سەردەمیانە یە، ب تایبەت د ڤی سەردەمێ زیرەکیا دەستکرد (AI) دا. هەر ژ مێژە خەونا من ئەوە کو ب ڕێکا ڤی پڕۆژەی هاریکاریا گەنجێن کورد بکەم بۆ فێربوونا ڤی زمانێ جیهانی، دا کو پاشەڕۆژەکا گەشتر بۆ خۆ ئاڤا بکەن. هیڤیدارم ئەڤ ماڵپەڕە ببێتە پردەک بۆ گەهشتن ب ئارمانجێن وە." },
-            en: { nav_home: "Home", nav_about: "About Me", theme_dark: "Dark", theme_black: "Pitch Black", theme_light: "Light", ad_title: "For Advertising", ad_desc: "Contact us to place your ad here", search_ph: "Search words...", level_a1: "Level A1", level_a2: "Level A2", level_b1: "Level B1", level_b2: "Level B2", about_title: "About Me", author_name: "Birhat", about_text: "My name is Birhat, an English Language graduate from the University of Zakho. I strongly believe that English is not just a communication tool, but the key to science, technology, and modern progress, especially in this era of AI. It has always been my dream to help Kurdish youth learn this global language to build a brighter future. I hope this website serves as a bridge to your goals." },
-            ar: { nav_home: "الرئيسية", nav_about: "حول", theme_dark: "داكن (Dark)", theme_black: "أسود (Pitch Black)", theme_light: "مضيء (Light)", ad_title: "للإعلان", ad_desc: "تواصل معنا لوضع إعلانك هنا", search_ph: "ابحث عن الكلمات...", level_a1: "مستوى A1", level_a2: "مستوى A2", level_b1: "مستوى B1", level_b2: "مستوى B2", about_title: "حول", author_name: "بيرهات (Birhat)", about_text: "اسمي بيرهات، خريج قسم اللغة الإنجليزية من جامعة زاخو. أؤمن بشدة أن اللغة الإنجليزية ليست مجرد أداة تواصل، بل هي مفتاح العلم والتكنولوجيا والتقدم الحديث، خاصة في عصر الذكاء الاصطناعي. لطالما كان حلمي مساعدة الشباب الكوردي على تعلم هذه اللغة العالمية لبناء مستقبل أكثر إشراقاً. آمل أن يكون هذا الموقع جسراً لتحقيق أهدافكم." }
+            ku: { 
+                nav_home: "سەرەکی", nav_about: "دەربارەی من", theme_dark: "تاریک (Dark)", theme_black: "ڕەش (Pitch Black)", theme_light: "ڕووناهی (Light)", 
+                ad_title: "ژ بۆ ڕیکلامێ", ad_desc: "پەیوەندیێ ب مە بکە بۆ بەلاڤکرنا ڕیکلاما تە ل ڤێرە", search_ph: "لێگەریان د ناڤ پەیڤان دا...", 
+                level_a1: "ئاستێ A1", level_a2: "ئاستێ A2", level_b1: "ئاستێ B1", level_b2: "ئاستێ B2", about_title: "دەربارەی من", 
+                author_name: "بیرهات (Birhat)", 
+                about_text: "ناڤێ من بیرهاتە، دەرچوویێ بەشێ زمانێ ئینگلیزی مە ل زانکۆیا زاخۆ. باوەریەکا موکوم ب وێ چەندێ هەیە کو زمانێ ئینگلیزی نە تەنێ ئامرازەکێ ئاخفتنێ یە، بەلکو کلیلا ڤەکرنا دەرگەهێن زانست، تەکنەلۆژیا و پێشکەفتنا سەردەمیانە یە، ب تایبەت د ڤی سەردەمێ زیرەکیا دەستکرد (AI) دا. هەر ژ مێژە خەونا من ئەوە کو ب ڕێکا ڤی پڕۆژەی هاریکاریا گەنجێن کورد بکەم بۆ فێربوونا ڤی زمانێ جیهانی، دا کو پاشەڕۆژەکا گەشتر بۆ خۆ ئاڤا بکەن. هیڤیدارم ئەڤ ماڵپەڕە ببێتە پردەک بۆ گەهشتن ب ئارمانجێن وە.",
+                modal_welcome: "بخێربهێی بۆ وێبسایتێ مە!",
+                modal_desc: "ئەڤ وێبسایتە هێشتا یێ د قۆناغا کارکرنێ دا (بێتا یە). ل دەمەکێ نێزیک چاڤەرێ بن.",
+                modal_sponsor_text: "ژ بۆ سپۆنسەرکرنێ، پەیوەندیێ ب ڤێ ژمارێ بکەن:",
+                modal_btn: "باشە، تێگەهشتم"
+            },
+            en: { 
+                nav_home: "Home", nav_about: "About Me", theme_dark: "Dark", theme_black: "Pitch Black", theme_light: "Light", 
+                ad_title: "For Advertising", ad_desc: "Contact us to place your ad here", search_ph: "Search words...", 
+                level_a1: "Level A1", level_a2: "Level A2", level_b1: "Level B1", level_b2: "Level B2", about_title: "About Me", 
+                author_name: "Birhat", 
+                about_text: "My name is Birhat, an English Language graduate from the University of Zakho. I strongly believe that English is not just a communication tool, but the key to science, technology, and modern progress, especially in this era of AI. It has always been my dream to help Kurdish youth learn this global language to build a brighter future. I hope this website serves as a bridge to your goals.",
+                modal_welcome: "Welcome to our website!",
+                modal_desc: "This website is currently under construction (Beta). Wait for it soon.",
+                modal_sponsor_text: "For sponsorship, please contact this number:",
+                modal_btn: "Okay, got it"
+            },
+            ar: { 
+                nav_home: "الرئيسية", nav_about: "حول", theme_dark: "داكن (Dark)", theme_black: "أسود (Pitch Black)", theme_light: "مضيء (Light)", 
+                ad_title: "للإعلان", ad_desc: "تواصل معنا لوضع إعلانك هنا", search_ph: "ابحث عن الكلمات...", 
+                level_a1: "مستوى A1", level_a2: "مستوى A2", level_b1: "مستوى B1", level_b2: "مستوى B2", about_title: "حول", 
+                author_name: "بيرهات (Birhat)", 
+                about_text: "اسمي بيرهات، خريج قسم اللغة الإنجليزية من جامعة زاخو. أؤمن بشدة أن اللغة الإنجليزية ليست مجرد أداة تواصل، بل هي مفتاح العلم والتكنولوجيا والتقدم الحديث، خاصة في عصر الذكاء الاصطناعي. لطالما كان حلمي مساعدة الشباب الكوردي على تعلم هذه اللغة العالمية لبناء مستقبل أكثر إشراقاً. آمل أن يكون هذا الموقع جسراً لتحقيق أهدافكم.",
+                modal_welcome: "مرحباً بك في موقعنا!",
+                modal_desc: "هذا الموقع لا يزال قيد الإنشاء (نسخة تجريبية). انتظرونا قريباً.",
+                modal_sponsor_text: "للرعاية والإعلان، يرجى التواصل على هذا الرقم:",
+                modal_btn: "حسناً، فهمت"
+            }
         };
 
         let currentLang = 'ku';
+
+        // --- مەنتیقێ پەنجەرەیا موبایلێ (Mobile Popup Logic) ---
+        window.onload = function() {
+            // ئەگەر شاشەیا موبایلێ بیت (768px یان کێمتر) و بەری نوکە نەهاتبیتە نیشاندان
+            if (window.innerWidth <= 768 && !sessionStorage.getItem('mobileWelcomeShown')) {
+                setTimeout(() => {
+                    document.getElementById('mobileWelcomeModal').style.display = 'flex';
+                }, 500); // نیڤ چرکەیا پاشخست دا کو ستایل باش Load ببیت
+            }
+        };
+
+        function closeModal() {
+            document.getElementById('mobileWelcomeModal').style.display = 'none';
+            // تۆمارکرن د Session دا دا کو هەر جار ئەزعاچ نەبیت ب کلیککرنێ
+            sessionStorage.setItem('mobileWelcomeShown', 'true');
+        }
+        // ----------------------------------------------------
 
         function toggleMenu() { document.getElementById('drawerMenu').classList.toggle('open'); document.getElementById('drawerOverlay').classList.toggle('open'); }
         function showPage(pageId) { document.querySelectorAll('.page').forEach(page => page.classList.remove('active')); document.getElementById(pageId).classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
@@ -360,7 +484,7 @@
 
             const levelWords = dictionary.filter(w => w.lvl === levelCode);
             if(levelWords.length === 0) {
-                wordsListDiv.innerHTML = `<p style="text-align:center; color:var(--text-muted);">بۆ ڤی ئاستی هێشتا پەیڤ نەهاتینە زێدەکرن.</p>`;
+                wordsListDiv.innerHTML = `<p style="text-align:center; color:var(--text-muted); margin-top:30px;">بۆ ڤی ئاستی هێشتا پەیڤ نەهاتینە زێدەکرن.</p>`;
             } else {
                 levelWords.forEach(obj => {
                     const div = document.createElement('div');
@@ -383,7 +507,6 @@
             container.innerHTML = '';
 
             wordObj.meanings.forEach(m => {
-                // Remove HTML tags for Speech Synthesis so it doesn't read "span class hl word"
                 const plainExEn = m.exEn.replace(/<[^>]*>?/gm, ''); 
 
                 const card = document.createElement('div');
@@ -427,7 +550,7 @@
             const filtered = dictionary.filter(obj => obj.word.toLowerCase().includes(val) || obj.meanings.some(m => m.ku.includes(val)));
 
             if(filtered.length === 0) {
-                searchResults.innerHTML = '<p style="text-align:center; color:var(--text-muted);">چ ئەنجام نەهاتنە دیتن.</p>';
+                searchResults.innerHTML = '<p style="text-align:center; color:var(--text-muted); margin-top:30px;">چ ئەنجام نەهاتنە دیتن.</p>';
             } else {
                 filtered.forEach(obj => {
                     const div = document.createElement('div');
@@ -435,7 +558,7 @@
                     div.onclick = () => openWordDetail(obj);
                     const previewKu = obj.meanings.map(m => m.ku).join('، ');
                     div.innerHTML = `
-                        <span class="word-en-title">${obj.word} <span style="font-size:12px; font-weight:normal;">(${obj.lvl})</span></span>
+                        <span class="word-en-title">${obj.word} <span style="font-size:12px; font-weight:normal; color:var(--primary);">(${obj.lvl})</span></span>
                         <span class="word-ku-preview">${previewKu}</span>
                     `;
                     searchResults.appendChild(div);
