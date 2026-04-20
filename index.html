@@ -7,260 +7,422 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* فۆنتێ ڕابەر */
         @font-face { font-family: 'rabar_041'; src: url('./rabar_041.ttf') format('truetype'); }
 
+        /* ڕەنگێن بنەڕەتی */
         :root {
             --bg-color: #f4f6f9; --surface-color: #ffffff; --text-color: #2c3e50;
             --text-muted: #7f8c8d; --primary-color: #FF8C00; --primary-hover: #e67e00;
-            --border-color: #e0e6ed; --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
+            --border-color: #e0e6ed; --shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            --vip-bg: linear-gradient(135deg, #FFD700, #FFA500);
         }
 
+        /* دۆخێ تاریک (سەرەکی) */
         body.dark-mode {
             --bg-color: #0f0f11; --surface-color: #1a1a1e; --text-color: #f1f2f6;
-            --text-muted: #a4b0be; --border-color: #2a2a30;
-            --shadow: 0 10px 30px rgba(255, 140, 0, 0.1);
+            --text-muted: #a4b0be; --border-color: #2a2a30; --shadow: 0 8px 25px rgba(255, 140, 0, 0.08);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'rabar_041', sans-serif; transition: background-color 0.4s, color 0.4s; }
-        body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
-
-        /* چارەسەرییا زوومێ بۆ مۆبایلێ */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'rabar_041', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         input, textarea, select { font-size: 16px !important; }
+        button { font-family: 'rabar_041', sans-serif; cursor: pointer; }
 
-        /* Navigation */
-        nav { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
-        .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .logo-icon { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); color: white; width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.6rem; }
-        .logo-text { font-size: 1.8rem; font-weight: bold; }
+        /* --- Navbar (سەرێ وێبسایتی) --- */
+        nav { padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; background: var(--surface-color); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
+        .nav-right, .nav-left { display: flex; align-items: center; gap: 15px; }
+        
+        .btn-icon { background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; position: relative; transition: 0.3s; }
+        .btn-icon:hover { color: var(--primary-color); border-color: var(--primary-color); }
+        
+        .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .logo-icon { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); color: white; width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; }
+        .logo-text { font-size: 1.7rem; font-weight: bold; }
         .logo-text span { color: var(--primary-color); }
         
-        .nav-actions { display: flex; align-items: center; gap: 15px; }
-        .btn-profile { background: rgba(255, 140, 0, 0.1); color: var(--primary-color); border: 1px solid var(--primary-color); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+        .btn-profile { background: rgba(255, 140, 0, 0.1); color: var(--primary-color); border: 1px solid var(--primary-color); padding: 8px 18px; border-radius: 10px; font-size: 1rem; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
         .btn-profile:hover { background: var(--primary-color); color: white; }
-        .theme-toggle { background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        /* Modals */
-        #authModal, #profileModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 999; justify-content: center; align-items: center; }
-        .modal-content { background: var(--surface-color); border: 1px solid var(--border-color); padding: 30px; border-radius: 15px; width: 90%; max-width: 420px; max-height: 90vh; overflow-y: auto; position: relative; }
-        .close-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; }
-        
-        .auth-tabs { display: flex; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); }
-        .auth-tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; color: var(--text-muted); font-weight: bold; }
-        .auth-tab.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); margin-bottom: -2px; }
-        
-        .auth-form { display: flex; flex-direction: column; gap: 12px; }
-        .auth-form input { width: 100%; padding: 12px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 8px; outline: none; }
-        .auth-form input[type="file"] { padding: 8px; font-size: 0.85rem; }
-        .btn-submit { background: var(--primary-color); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; margin-top: 5px; }
-        .btn-submit:hover { background: var(--primary-hover); }
-        
-        .divider { text-align: center; margin: 15px 0; color: var(--text-muted); font-size: 0.9rem; position: relative; }
-        .divider::before, .divider::after { content: ""; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--border-color); }
-        .divider::before { right: 0; } .divider::after { left: 0; }
+        /* --- Sidebar (مینیویا تەنیشتێ) --- */
+        .sidebar { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background: var(--surface-color); box-shadow: -5px 0 25px rgba(0,0,0,0.5); z-index: 1001; transition: right 0.4s ease; display: flex; flex-direction: column; }
+        .sidebar.open { right: 0; }
+        .sidebar-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+        .sidebar-menu { list-style: none; padding: 10px 0; flex-grow: 1; overflow-y: auto; }
+        .sidebar-menu li { padding: 15px 25px; font-size: 1.1rem; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s; }
+        .sidebar-menu li:hover { background: rgba(255, 140, 0, 0.05); color: var(--primary-color); padding-right: 30px; }
+        .sidebar-menu li i { width: 25px; text-align: center; color: var(--primary-color); }
+        .sidebar-footer { padding: 20px; text-align: center; border-top: 1px solid var(--border-color); background: var(--bg-color); }
+        .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; display: none; backdrop-filter: blur(3px); }
 
-        .btn-google, .btn-phone-opt { width: 100%; padding: 10px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
-        .btn-google:hover, .btn-phone-opt:hover { border-color: var(--primary-color); }
-        .btn-google i { color: #DB4437; } .btn-phone-opt i { color: #0F9D58; }
-
-        .link-text { color: var(--primary-color); font-size: 0.85rem; text-align: center; cursor: pointer; margin-top: 10px; }
-        .auth-msg { text-align: center; font-size: 0.85rem; color: #ff4757; margin-top: 10px; }
+        /* --- Modals (پەنجەرە) --- */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { background: var(--surface-color); border: 1px solid var(--primary-color); padding: 30px; border-radius: 20px; width: 100%; max-width: 450px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 0 30px rgba(255,140,0,0.15); }
+        .modal-content::-webkit-scrollbar { width: 6px; } .modal-content::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 5px; }
+        .close-btn { position: absolute; top: 15px; left: 15px; background: rgba(255,0,0,0.1); border: none; font-size: 1.2rem; width: 35px; height: 35px; border-radius: 50%; color: #ff4757; transition: 0.3s; }
+        .close-btn:hover { background: #ff4757; color: white; transform: rotate(90deg); }
+        
+        /* Auth Forms */
+        .auth-tabs { display: flex; margin-bottom: 25px; border-bottom: 2px solid var(--border-color); }
+        .auth-tab { flex: 1; text-align: center; padding: 12px; cursor: pointer; color: var(--text-muted); font-weight: bold; font-size: 1.1rem; transition: 0.3s; }
+        .auth-tab:hover { color: var(--text-color); }
+        .auth-tab.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); margin-bottom: -2px; }
+        .auth-form { display: flex; flex-direction: column; gap: 15px; }
+        .auth-form input { width: 100%; padding: 14px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 10px; outline: none; transition: 0.3s; }
+        .auth-form input:focus { border-color: var(--primary-color); }
+        .btn-submit { background: var(--primary-color); color: white; border: none; padding: 14px; border-radius: 10px; width: 100%; font-size: 1.1rem; font-weight: bold; transition: 0.3s; }
+        .btn-submit:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,140,0,0.3); }
+        .divider { text-align: center; margin: 10px 0; color: var(--text-muted); font-size: 0.9rem; position: relative; }
+        .auth-msg { text-align: center; font-size: 0.9rem; color: #ff4757; margin-top: 10px; line-height: 1.5; }
         .auth-success { color: #2ecc71; }
 
-        /* Profile Data Modal (زەنگینکرنا پرۆفایلی) */
-        .profile-pic-large { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px auto; display: block; border: 3px solid var(--primary-color); }
-        .profile-name { text-align: center; font-size: 1.3rem; color: var(--primary-color); margin-bottom: 5px; }
-        .profile-email { text-align: center; color: var(--text-muted); margin-bottom: 15px; font-size: 0.85rem; }
+        /* --- DASHBOARD PROFILE --- */
+        .profile-header { text-align: center; margin-bottom: 25px; }
+        .profile-pic { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary-color); margin-bottom: 10px; object-fit: cover; }
+        .profile-name { font-size: 1.5rem; color: var(--primary-color); margin-bottom: 5px; }
+        .profile-email { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 10px; }
         
-        .profile-menu { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        .profile-menu-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 140, 0, 0.05); padding: 12px 15px; border-radius: 10px; cursor: pointer; border: 1px solid var(--border-color); transition: 0.3s; }
-        .profile-menu-item:hover { background: var(--primary-color); border-color: var(--primary-color); color: white; }
-        .profile-menu-item .menu-left { display: flex; align-items: center; gap: 10px; }
-        .menu-badge { background: var(--text-color); color: var(--bg-color); padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
-        .menu-vip-badge { background: #ffd700; color: #000; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
+        .dash-tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; }
+        .dash-tabs::-webkit-scrollbar { display: none; }
+        .dash-tab { flex: 1; min-width: 90px; text-align: center; padding: 12px; font-size: 0.95rem; color: var(--text-muted); cursor: pointer; white-space: nowrap; transition: 0.3s; }
+        .dash-tab.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); font-weight: bold; }
+        .dash-content { display: none; animation: fadeIn 0.3s; }
+        .dash-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .btn-logout { width: 100%; background: transparent; border: 1px solid #ff4757; color: #ff4757; padding: 10px; border-radius: 8px; cursor: pointer; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: var(--bg-color); border: 1px solid var(--border-color); padding: 15px; border-radius: 12px; text-align: center; }
+        .stat-card h3 { color: var(--primary-color); font-size: 1.5rem; margin-bottom: 5px; }
+        .stat-card p { font-size: 0.85rem; color: var(--text-muted); }
+        
+        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .tool-card { background: var(--bg-color); border: 1px solid var(--border-color); padding: 18px 10px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .tool-card:hover { border-color: var(--primary-color); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255,140,0,0.1); }
+        .tool-card i { font-size: 1.8rem; color: var(--primary-color); margin-bottom: 10px; }
+        .tool-card h4 { font-size: 0.95rem; margin-bottom: 5px; color: var(--text-color); }
+        .tool-card p { font-size: 0.75rem; color: var(--text-muted); }
+
+        .pricing-card { background: var(--bg-color); border: 2px solid #FFD700; border-radius: 15px; padding: 25px; text-align: center; position: relative; overflow: hidden; }
+        .pricing-card h3 { color: #FFD700; margin-bottom: 15px; font-size: 1.6rem; }
+        .price { font-size: 2.2rem; font-weight: bold; margin-bottom: 20px; color: var(--text-color); }
+        .price span { font-size: 1rem; color: var(--text-muted); }
+        .pricing-features { list-style: none; text-align: right; margin-bottom: 20px; font-size: 0.95rem; line-height: 1.8; color: var(--text-color); }
+        .pricing-features i { color: #2ecc71; margin-left: 10px; }
+        .btn-vip { background: var(--vip-bg); color: #000; border: none; padding: 14px; border-radius: 10px; width: 100%; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
+        .btn-vip:hover { transform: scale(1.05); }
+
+        .btn-logout { width: 100%; background: transparent; border: 1px solid #ff4757; color: #ff4757; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.3s; }
         .btn-logout:hover { background: #ff4757; color: white; }
 
-        /* Main Translator App */
-        main { flex-grow: 1; display: flex; flex-direction: column; align-items: center; padding: 30px 15px; max-width: 1000px; margin: 0 auto; width: 100%; }
-        .title-header { margin-bottom: 25px; font-size: 1.3rem; }
-        .translator-wrapper { width: 100%; background: var(--surface-color); padding: 20px; border-radius: 15px; border: 1px solid var(--border-color); }
-        .translation-boxes { display: grid; grid-template-columns: 1fr auto 1fr; gap: 15px; align-items: center; }
-        .box { display: flex; flex-direction: column; background: var(--bg-color); border-radius: 12px; border: 1px solid var(--border-color); }
-        .box-header { display: flex; justify-content: space-between; padding: 10px 15px; color: var(--primary-color); border-bottom: 1px solid var(--border-color); }
-        textarea { width: 100%; height: 180px; background: transparent; border: none; padding: 15px; color: var(--text-color); resize: none; outline: none; }
-        .btn-swap { background: var(--surface-color); border: 1px solid var(--border-color); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .translate-action { text-align: center; margin-top: 20px; }
-        .btn-translate { background: var(--primary-color); color: white; border: none; padding: 12px 40px; border-radius: 10px; cursor: pointer; font-size: 1.1rem; }
+        /* --- Main Translator Area --- */
+        main { flex-grow: 1; padding: 30px 15px; max-width: 1200px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .title-header { margin-bottom: 30px; font-size: 1.5rem; color: var(--text-color); text-align: center; }
+        .translator-box { width: 100%; background: var(--surface-color); padding: 25px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
+        
+        .boxes-wrapper { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: stretch; }
+        .text-box { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; transition: 0.3s; }
+        .text-box:focus-within { border-color: var(--primary-color); box-shadow: 0 0 10px rgba(255,140,0,0.1); }
+        
+        .box-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: rgba(255,140,0,0.05); border-bottom: 1px solid var(--border-color); font-weight: bold; color: var(--primary-color); font-size: 1.05rem; }
+        
+        textarea { width: 100%; height: 220px; background: transparent; border: none; padding: 18px; color: var(--text-color); resize: none; outline: none; line-height: 1.6; }
+        
+        .toolbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 18px; border-top: 1px solid var(--border-color); background: var(--surface-color); }
+        .toolbar-group { display: flex; gap: 18px; }
+        .toolbar i { color: var(--text-muted); cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
+        .toolbar i:hover { color: var(--primary-color); transform: scale(1.15); }
+        
+        .btn-swap { background: var(--surface-color); border: 1px solid var(--border-color); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--text-muted); margin: auto; transition: 0.3s; cursor: pointer; }
+        .btn-swap:hover { border-color: var(--primary-color); color: var(--primary-color); transform: rotate(180deg); }
+        
+        .translate-btn-wrapper { text-align: center; margin-top: 25px; }
+        .btn-main-translate { background: var(--primary-color); color: white; border: none; padding: 15px 60px; border-radius: 12px; font-size: 1.3rem; font-weight: bold; box-shadow: 0 5px 20px rgba(255,140,0,0.3); display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .btn-main-translate:hover { background: var(--primary-hover); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255,140,0,0.4); }
 
-        footer { text-align: center; padding: 20px; border-top: 1px solid var(--border-color); margin-top: auto; }
+        /* --- Footer & Socials --- */
+        footer { background: var(--surface-color); border-top: 1px solid var(--border-color); padding: 30px 20px; text-align: center; margin-top: auto; }
+        .social-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
+        .social-links a { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 1.5rem; transition: 0.3s; }
+        .social-links a:hover.snap { color: #FFFC00; border-color: #FFFC00; background: #222; } 
+        .social-links a:hover.insta { color: #E1306C; border-color: #E1306C; } 
+        .social-links a:hover.tele { color: #0088cc; border-color: #0088cc; }
+        .social-links a:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .footer-text { color: var(--text-muted); font-size: 0.95rem; }
+        .footer-text span { color: var(--primary-color); font-weight: bold; }
 
-        @media (max-width: 768px) { .translation-boxes { grid-template-columns: 1fr; } textarea { height: 150px; } }
+        @media (max-width: 768px) { 
+            .boxes-wrapper { grid-template-columns: 1fr; } 
+            .btn-swap { transform: rotate(90deg); margin: 10px auto; }
+            .btn-swap:hover { transform: rotate(270deg); }
+            textarea { height: 160px; }
+        }
     </style>
 </head>
 <body class="dark-mode">
 
     <nav>
-        <div class="logo-container">
-            <div class="logo-icon"><i class="fa-solid fa-language"></i></div>
-            <div class="logo-text">Kurd<span>eng</span></div>
+        <div class="nav-right">
+            <button class="btn-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+            <div class="logo-container" onclick="location.reload()">
+                <div class="logo-icon"><i class="fa-solid fa-language"></i></div>
+                <div class="logo-text">Kurd<span>eng</span></div>
+            </div>
         </div>
-        <div class="nav-actions">
-            <button class="btn-profile" id="btnOpenAuth"><i class="fa-solid fa-user"></i> <span id="navProfileText">چوونە ژوور</span></button>
+        <div class="nav-left">
             <button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
+            <button class="btn-profile" id="btnOpenAuth"><i class="fa-solid fa-user"></i> <span id="navProfileText">چوونە ژوور</span></button>
         </div>
     </nav>
 
-    <div id="authModal">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2 style="color:var(--primary-color); font-size: 1.5rem;">Kurdeng App</h2>
+            <button class="btn-icon" style="width:35px; height:35px;" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <ul class="sidebar-menu">
+            <li onclick="location.reload()"><i class="fa-solid fa-house"></i> سەرەکی</li>
+            <li onclick="openModal('adsModal')"><i class="fa-solid fa-bullhorn"></i> ڕیکلام دگەل مە</li>
+            <li onclick="alertMsg('تایبەتمەندیا پرۆفایلی')"><i class="fa-solid fa-star"></i> پەیڤێن دلخواز</li>
+            <li onclick="alertMsg('تایبەتمەندیا پرۆفایلی')"><i class="fa-solid fa-clock-rotate-left"></i> دیرۆک</li>
+            <li onclick="alertMsg('تایبەتمەندیا پرۆفایلی')"><i class="fa-solid fa-gear"></i> ڕێکخستن</li>
+        </ul>
+        <div class="sidebar-footer">
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">پەیوەندی ب گەشەپێدەری</p>
+            <div class="social-links" style="gap:15px; margin-bottom:0;">
+                <a href="https://snapchat.com/add/birhatkrd" target="_blank" class="snap" style="width:40px; height:40px; font-size:1.2rem;"><i class="fa-brands fa-snapchat"></i></a>
+                <a href="https://instagram.com/birhatkrd" target="_blank" class="insta" style="width:40px; height:40px; font-size:1.2rem;"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://t.me/birhatkrd" target="_blank" class="tele" style="width:40px; height:40px; font-size:1.2rem;"><i class="fa-brands fa-telegram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div id="adsModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('adsModal')"><i class="fa-solid fa-xmark"></i></button>
+            <h2 style="color:var(--primary-color); text-align:center; margin-bottom:15px;"><i class="fa-solid fa-bullhorn"></i> بەشێ ڕیکلامان</h2>
+            <p style="font-size:0.95rem; color:var(--text-muted); text-align:center; margin-bottom:20px;">وێبسایتێ کوردینگ ڕۆژانە هزاران سەرەدانکەر هەنە. بۆ دانانا ڕیکلاما خۆ، فۆرمێ پڕ بکە.</p>
+            <div class="auth-form">
+                <input type="text" placeholder="ناڤێ تە یان کۆمپانیایێ">
+                <input type="text" placeholder="ژمارا مۆبایلێ / تێلێگرام">
+                <textarea rows="4" placeholder="تێبینی یان جۆرێ ڕیکلامێ..." style="width:100%; padding:12px; background:var(--bg-color); border:1px solid var(--border-color); color:var(--text-color); border-radius:10px; outline:none; resize:none;"></textarea>
+                <button class="btn-submit" onclick="alertMsg('داخازییا تە هاتە فرێکرن. دێ پەیوەندیێ ب تە کەین!')">فرێکرنا داخازیێ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="authModal" class="modal-overlay">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('authModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 15px;">هەژمارا تە</h2>
-            
+            <h2 style="text-align:center; color:var(--primary-color); margin-bottom:15px;">چوونە ژوور</h2>
             <div class="auth-tabs">
-                <div class="auth-tab active" id="tabLogin" onclick="switchTab('login')">چوونە ژوور</div>
-                <div class="auth-tab" id="tabSignup" onclick="switchTab('signup')">تۆمارکرن</div>
+                <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">چوونە ژوور</div>
+                <div class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">تۆمارکرن</div>
             </div>
-
+            
             <div id="loginForm" class="auth-form">
                 <input type="email" id="loginEmail" placeholder="ئیمەیلێ تە">
                 <input type="password" id="loginPassword" placeholder="پاسۆرد">
                 <button class="btn-submit" id="btnLogin">چوونە ژوور</button>
-                <div class="link-text" onclick="switchTab('forgot')">پاسۆرد ژبیرکریە؟</div>
-                
                 <div class="divider">یان</div>
-                <button class="btn-google" id="btnGoogle"><i class="fa-brands fa-google"></i> ب ڕێکا گۆگڵ</button>
-                <button class="btn-phone-opt" onclick="switchTab('phone')"><i class="fa-solid fa-phone"></i> ب ژمارا مۆبایلێ</button>
+                <button class="btn-submit" id="btnGoogle" style="background:#DB4437; display:flex; align-items:center; justify-content:center; gap:10px;"><i class="fa-brands fa-google"></i> ب ڕێکا گۆگڵ</button>
             </div>
-
-            <div id="signupForm" class="auth-form" style="display: none;">
-                <input type="text" id="signupName" placeholder="ناڤێ تە یێ سێیانی">
+            
+            <div id="signupForm" class="auth-form" style="display:none;">
+                <input type="text" id="signupName" placeholder="ناڤێ تە">
                 <input type="email" id="signupEmail" placeholder="ئیمەیل">
-                <input type="password" id="signupPassword" placeholder="پاسۆرد (ل کێماتی ٦ پیت)">
-                <label style="font-size: 0.85rem; color: var(--text-muted);">وێنەیێ پرۆفایلی (نە ئیجبارییە):</label>
-                <input type="file" id="signupImage" accept="image/*">
-                <button class="btn-submit" id="btnSignup">دروستکرن</button>
+                <input type="password" id="signupPassword" placeholder="پاسۆرد">
+                <label style="font-size:0.85rem; color:var(--text-muted);">وێنەیێ پرۆفایلی (نە ئیجبارییە)</label>
+                <input type="file" id="signupImage" accept="image/*" style="font-size: 0.8rem; padding: 8px;">
+                <button class="btn-submit" id="btnSignup">دروستکرنا هەژمارێ</button>
             </div>
-
-            <div id="forgotForm" class="auth-form" style="display: none;">
-                <p style="font-size:0.9rem; text-align:center; color:var(--text-muted);">ئیمەیلێ خۆ بنڤیسە دا لینکێ گوهۆڕینێ بۆ تە فرێبکەین.</p>
-                <input type="email" id="forgotEmail" placeholder="ئیمەیلێ تە">
-                <button class="btn-submit" id="btnForgot">لینکێ فرێبکە</button>
-                <div class="link-text" onclick="switchTab('login')">ڤەگەڕیان بۆ چوونە ژوور</div>
-            </div>
-
-            <div id="phoneForm" class="auth-form" style="display: none;">
-                <p style="font-size:0.9rem; text-align:center; color:var(--text-muted);">ژمارا مۆبایلێ دگەل کۆدێ وەڵاتی بنڤیسە (نموونە: 9647501234567+)</p>
-                <input type="tel" id="phoneNumber" placeholder="+964 750 XXX XXXX" dir="ltr">
-                <div id="recaptcha-container"></div>
-                <button class="btn-submit" id="btnSendCode">کۆدێ فرێبکە</button>
-                
-                <div id="verifyCodeSection" style="display: none; margin-top: 15px;">
-                    <input type="text" id="verificationCode" placeholder="کۆدێ هاتە سەر مۆبایلا تە">
-                    <button class="btn-submit" id="btnVerifyCode">پشتڕاستکرن</button>
-                </div>
-                <div class="link-text" onclick="switchTab('login')">ڤەگەڕیان بۆ ئیمەیلی</div>
-            </div>
-
             <div id="authMessage" class="auth-msg"></div>
         </div>
     </div>
 
-    <div id="profileModal">
-        <div class="modal-content">
+    <div id="profileModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 650px;">
             <button class="close-btn" onclick="closeModal('profileModal')"><i class="fa-solid fa-xmark"></i></button>
             
-            <img id="profilePicDisplay" src="https://via.placeholder.com/100" class="profile-pic-large" alt="Profile">
-            <h2 id="profileNameDisplay" class="profile-name">ناڤێ بکارهێنەری</h2>
-            <p id="profileEmailDisplay" class="profile-email">email@example.com</p>
-            
-            <div class="profile-menu">
-                <div class="profile-menu-item" onclick="alert('دێ ل پاشەڕۆژێ کار کەت!')">
-                    <div class="menu-left"><i class="fa-solid fa-star"></i> پەیڤێن دلخواز</div>
-                    <span class="menu-badge">٠ پەیڤ</span>
+            <div class="profile-header">
+                <img id="profilePicDisplay" src="https://via.placeholder.com/100" class="profile-pic" alt="Profile">
+                <h2 class="profile-name" id="profileNameDisplay">بکارهێنەر</h2>
+                <p class="profile-email" id="profileEmailDisplay">email@example.com</p>
+                <span style="background:var(--primary-color); color:white; padding:4px 12px; border-radius:15px; font-size:0.85rem; font-weight:bold; margin-top:5px; display:inline-block;">ئاستێ تە: بڕۆنز</span>
+            </div>
+
+            <div class="dash-tabs">
+                <div class="dash-tab active" onclick="switchProfileTab('dashMain', this)">سەرەکی</div>
+                <div class="dash-tab" onclick="switchProfileTab('dashAI', this)">ئامرازێن AI</div>
+                <div class="dash-tab" onclick="switchProfileTab('dashLearn', this)">فێربوون</div>
+                <div class="dash-tab" onclick="switchProfileTab('dashVIP', this)"><i class="fa-solid fa-crown" style="color:#FFD700;"></i> VIP</div>
+            </div>
+
+            <div id="dashMain" class="dash-content active">
+                <div class="stats-grid">
+                    <div class="stat-card"><h3>1,250</h3><p>پەیڤێن وەرگێڕای</p></div>
+                    <div class="stat-card"><h3>85</h3><p>خاڵێن XP</p></div>
+                    <div class="stat-card"><h3>24</h3><p>پەیڤێن دلخواز</p></div>
+                    <div class="stat-card"><h3>3</h3><p>ڕۆژێن چالاک</p></div>
                 </div>
-                <div class="profile-menu-item" onclick="alert('دێ ل پاشەڕۆژێ کار کەت!')">
-                    <div class="menu-left"><i class="fa-solid fa-clock-rotate-left"></i> دیرۆکا وەرگێڕانان</div>
-                    <span class="menu-badge">٠ تێکست</span>
-                </div>
-                <div class="profile-menu-item" onclick="alert('دێ ل پاشەڕۆژێ کار کەت!')">
-                    <div class="menu-left"><i class="fa-solid fa-chart-pie"></i> ئامارێن هەژمارێ</div>
-                </div>
-                <div class="profile-menu-item" onclick="alert('دێ ل پاشەڕۆژێ کار کەت!')">
-                    <div class="menu-left"><i class="fa-solid fa-crown" style="color: #ffd700;"></i> هەژمارا پرۆ (VIP)</div>
-                    <span class="menu-vip-badge">نویکرن</span>
-                </div>
-                <div class="profile-menu-item" onclick="alert('دێ ل پاشەڕۆژێ کار کەت!')">
-                    <div class="menu-left"><i class="fa-solid fa-gear"></i> ڕێکخستنێن هەژمارێ</div>
+                <button class="btn-logout" id="btnLogout">دەرکەفتن ژ هەژمارێ</button>
+            </div>
+
+            <div id="dashAI" class="dash-content">
+                <div class="tools-grid">
+                    <div class="tool-card" onclick="alertMsg('دێ ل وەشانا داهاتوو چالاک بیت!')"><i class="fa-solid fa-file-pdf"></i><h4>بەلگەنامە</h4><p>وەرگێڕانا PDF/Word</p></div>
+                    <div class="tool-card" onclick="alertMsg('دێ ل وەشانا داهاتوو چالاک بیت!')"><i class="fa-solid fa-camera"></i><h4>کامێرا (OCR)</h4><p>وەرگێڕانا وێنەی</p></div>
+                    <div class="tool-card" onclick="alertMsg('دێ ل وەشانا داهاتوو چالاک بیت!')"><i class="fa-solid fa-compress"></i><h4>کورتکرن</h4><p>کورتکرنا بابەتان</p></div>
+                    <div class="tool-card" onclick="alertMsg('دێ ل وەشانا داهاتوو چالاک بیت!')"><i class="fa-solid fa-spell-check"></i><h4>ڕێزمان</h4><p>ڕاستکرنا خەلەتیان</p></div>
                 </div>
             </div>
 
-            <button class="btn-logout" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> دەرکەفتن ژ هەژمارێ</button>
+            <div id="dashLearn" class="dash-content">
+                <div class="tools-grid">
+                    <div class="tool-card" onclick="alertMsg('دێ ل وەشانا داهاتوو چالاک بیت!')"><i class="fa-solid fa-layer-group"></i><h4>فلاش کارد</h4><p>ژبەرکرنا پەیڤان</p></div>
+                    <div class="tool-card" onclick="alertMsg('دێ ل وەشانا داهاتوو چالاک بیت!')"><i class="fa-solid fa-gamepad"></i><h4>یاری</h4><p>تاقیکرنەوا زمانان</p></div>
+                    <div class="tool-card" onclick="alertMsg('دێ ل وەشانا داهاتوو چالاک بیت!')"><i class="fa-solid fa-book-open"></i><h4>دەفتەرا من</h4><p>پەیڤێن سەیڤکری</p></div>
+                    <div class="tool-card" onclick="alertMsg('دێ ل وەشانا داهاتوو چالاک بیت!')"><i class="fa-solid fa-chart-line"></i><h4>پێشکەفتن</h4><p>ئاستێ فێربوونێ</p></div>
+                </div>
+            </div>
+
+            <div id="dashVIP" class="dash-content">
+                <div class="pricing-card">
+                    <h3>Kurdeng Pro</h3>
+                    <div class="price">$4.99 <span>/ مەهانە</span></div>
+                    <ul class="pricing-features">
+                        <li>بێ ڕیکلام (Ad-Free) <i class="fa-solid fa-check"></i></li>
+                        <li>وەرگێڕانا بێسنوور <i class="fa-solid fa-check"></i></li>
+                        <li>ئامرازێن ژیرییا دەستکرد <i class="fa-solid fa-check"></i></li>
+                        <li>دەنگێ سروشتی (AI Voice) <i class="fa-solid fa-check"></i></li>
+                    </ul>
+                    <button class="btn-vip" onclick="alertMsg('بەم زووانە سیستەمێ پارەدانا ئەلکترۆنی دێ بەردەست بیت')">کڕینا پلانێ</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <main>
         <h2 class="title-header">زیرەکترین وەرگێڕان ب زاراڤێ بادینی 😍</h2>
-        <div class="translator-wrapper">
-            <div class="translation-boxes">
-                <div class="box">
-                    <div class="box-header"><span>ئینگلیزی</span><i class="fa-solid fa-volume-high"></i></div>
-                    <textarea id="englishInput" placeholder="Enter text here..."></textarea>
+        <div class="translator-box">
+            <div class="boxes-wrapper">
+                
+                <div class="text-box">
+                    <div class="box-head"><span>ئینگلیزی (English)</span></div>
+                    <textarea id="englishInput" placeholder="Enter text here..." dir="ltr" style="text-align: left;"></textarea>
+                    <div class="toolbar">
+                        <div class="toolbar-group">
+                            <i class="fa-solid fa-microphone" title="ئاخافتن ب مایکێ" onclick="alertMsg('دێ ل وەشانا داهاتوو چالاک بیت')"></i>
+                            <i class="fa-solid fa-volume-high" title="گوهداریکرن" onclick="alertMsg('دێ ل وەشانا داهاتوو چالاک بیت')"></i>
+                        </div>
+                        <div class="toolbar-group">
+                            <i class="fa-solid fa-trash-can" title="سڕینەوە" onclick="document.getElementById('englishInput').value=''"></i>
+                        </div>
+                    </div>
                 </div>
+
                 <button class="btn-swap"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>
-                <div class="box">
-                    <div class="box-header"><span>کوردی (بادینی)</span><i class="fa-regular fa-copy"></i></div>
-                    <textarea id="kurdishOutput" readonly placeholder="ئەنجام دێ ل ڤێرە دیار بیت..."></textarea>
+
+                <div class="text-box">
+                    <div class="box-head"><span>کوردی (بادینی)</span></div>
+                    <textarea id="kurdishOutput" readonly placeholder="ئەنجام دێ ل ڤێرە دیار بیت..." dir="rtl" style="text-align: right;"></textarea>
+                    <div class="toolbar">
+                        <div class="toolbar-group">
+                            <i class="fa-regular fa-copy" title="کۆپیکرن" onclick="copyText('kurdishOutput')"></i>
+                            <i class="fa-solid fa-share-nodes" title="بەلاڤکرن" onclick="alertMsg('شەیرکرن')"></i>
+                        </div>
+                        <div class="toolbar-group">
+                            <i class="fa-solid fa-star" title="سەیڤکرن بۆ پرۆفایلی" onclick="alertMsg('پێدڤییە سەرەتا هەژمارێ دروست بکەی!')"></i>
+                        </div>
+                    </div>
                 </div>
+
             </div>
-            <div class="translate-action">
-                <button class="btn-translate" onclick="startTranslation()"><i class="fa-solid fa-language"></i> وەرگێڕان</button>
+            
+            <div class="translate-btn-wrapper">
+                <button class="btn-main-translate" onclick="startTranslation()"><i class="fa-solid fa-language"></i> وەرگێڕان بکە</button>
             </div>
         </div>
     </main>
 
     <footer>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Developed by <span style="color: var(--primary-color);">Birhat Krd</span></p>
+        <h3 style="color:var(--primary-color); margin-bottom:20px; font-size: 1.3rem;">ئەکانتێن فەرمی یێن گەشەپێدەری</h3>
+        <div class="social-links">
+            <a href="https://snapchat.com/add/birhatkrd" target="_blank" class="snap"><i class="fa-brands fa-snapchat"></i></a>
+            <a href="https://instagram.com/birhatkrd" target="_blank" class="insta"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://t.me/birhatkrd" target="_blank" class="tele"><i class="fa-brands fa-telegram"></i></a>
+        </div>
+        <p class="footer-text">Developed with <i class="fa-solid fa-heart" style="color:#ff4757;"></i> by <span>Birhat Krd</span></p>
     </footer>
 
     <script>
-        function toggleTheme() { document.body.classList.toggle('dark-mode'); }
+        function toggleTheme() { document.body.classList.toggle('dark-mode'); document.getElementById('themeIcon').className = document.body.classList.contains('dark-mode') ? 'fa-solid fa-sun' : 'fa-solid fa-moon'; }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').style.display = document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none'; }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function switchTab(tab) {
+        function alertMsg(msg) { alert(msg); }
+        function copyText(id) { const txt = document.getElementById(id).value; if(txt) { navigator.clipboard.writeText(txt); alert("هاتە کۆپیکرن!"); } }
+
+        function switchAuthTab(tab) {
             document.getElementById('authMessage').innerText = "";
-            ['loginForm', 'signupForm', 'forgotForm', 'phoneForm'].forEach(f => document.getElementById(f).style.display = 'none');
-            document.getElementById('tabLogin').classList.remove('active');
-            document.getElementById('tabSignup').classList.remove('active');
-            if(tab === 'login') { document.getElementById('loginForm').style.display = 'flex'; document.getElementById('tabLogin').classList.add('active'); }
-            if(tab === 'signup') { document.getElementById('signupForm').style.display = 'flex'; document.getElementById('tabSignup').classList.add('active'); }
-            if(tab === 'forgot') { document.getElementById('forgotForm').style.display = 'flex'; }
-            if(tab === 'phone') { document.getElementById('phoneForm').style.display = 'flex'; }
+            document.getElementById('loginForm').style.display = tab === 'login' ? 'flex' : 'none';
+            document.getElementById('signupForm').style.display = tab === 'signup' ? 'flex' : 'none';
+            document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+            document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
         }
 
+        function switchProfileTab(tabId, element) {
+            document.querySelectorAll('.dash-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.dash-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        // کۆدێ ئەنیمەیشنا (ChatGPT) بۆ وەرگێڕانێ وەکی تە خواستی
         let typingTimer;
         function startTranslation() {
             const input = document.getElementById('englishInput').value.trim();
-            const out = document.getElementById('kurdishOutput');
-            if(!input) return alert("تێکستێ بنڤیسە!");
-            clearInterval(typingTimer); out.value = ""; 
-            const msg = "کار یێ ل سەر دهێتە کرن..."; let i = 0;
-            typingTimer = setInterval(() => { if(i < msg.length){ out.value+=msg.charAt(i); i++; } else clearInterval(typingTimer); }, 40);
+            const outputBox = document.getElementById('kurdishOutput');
+
+            if(input === "") {
+                alert("هیڤییە پێشتر تێکستەکێ بنڤیسە!");
+                return;
+            }
+
+            // ڕاگرتنا نڤیسینا بەرێ
+            clearInterval(typingTimer);
+            outputBox.value = ""; 
+
+            // ئەو نامەیا دێ هێتە نیشاندان وەکی داخازییا تە
+            const message = "کار لسەر مالپەری دهێتە کرن ل دەمەک نێزیک دێ ب باشترین شیواز هێتە خزمەتا هەوە ژ دروستکەرێ مالپەری birhat krd";
+            let i = 0;
+
+            // خێرایییا نڤیسینێ (ب میلی چرکە) وەکی ChatGPT
+            const speed = 45; 
+
+            // ئەنیمەیشنا نڤیسینێ پیت ب پیت
+            typingTimer = setInterval(() => {
+                if (i < message.length) {
+                    outputBox.value += message.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typingTimer); // ڕاوەستاندنا تایکمەری دەمێ خلاس دبیت
+                }
+            }, speed);
         }
     </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, onAuthStateChanged, signOut, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
+        // کلیلا فایەربەیسی
         const firebaseConfig = {
             apiKey: "AIzaSyASqxKFyhy-9QxeQeJ70Ihiq2ziY1HBbNg",
             authDomain: "kurdeng-31aa6.firebaseapp.com",
             projectId: "kurdeng-31aa6",
-            storageBucket: "kurdeng-31aa6.firebasestorage.app",
-            messagingSenderId: "113701120840",
-            appId: "1:113701120840:web:2b2181cfb363682d99a17d"
+            storageBucket: "kurdeng-31aa6.firebasestorage.app"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -269,22 +431,17 @@
         
         let currentUser = null;
         const authMsg = document.getElementById('authMessage');
-        const showMsg = (text, isSuccess = false) => { authMsg.className = isSuccess ? "auth-msg auth-success" : "auth-msg"; authMsg.innerText = text; };
+        const showMsg = (txt, success = false) => { authMsg.className = success ? "auth-msg auth-success" : "auth-msg"; authMsg.innerText = txt; };
 
-        // چاڤدێرییا دۆخێ بکارهێنەری
+        // چاڤدێرییا دۆخێ هەژمارێ
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // ئەگەر ئیمەیلێ پشتڕاستکری بیت یان ب مۆبایلێ/گۆگڵ هاتبیتە ژوور
-                if (user.emailVerified || user.phoneNumber || user.providerData.some(p => p.providerId === 'google.com')) {
-                    currentUser = user;
-                    document.getElementById('navProfileText').innerText = user.displayName || "پرۆفایلا من";
-                    document.getElementById('profileNameDisplay').innerText = user.displayName || "بکارهێنەرێ هێژا";
-                    document.getElementById('profileEmailDisplay').innerText = user.email || user.phoneNumber || "بێ ئیمەیل";
-                    document.getElementById('profilePicDisplay').src = user.photoURL || "https://via.placeholder.com/100";
-                    closeModal('authModal');
-                } else {
-                    currentUser = null;
-                }
+            if (user && (user.emailVerified || user.providerData.some(p => p.providerId === 'google.com'))) {
+                currentUser = user;
+                document.getElementById('navProfileText').innerText = user.displayName || "پرۆفایل";
+                document.getElementById('profileNameDisplay').innerText = user.displayName || "بکارهێنەر";
+                document.getElementById('profileEmailDisplay').innerText = user.email || "";
+                document.getElementById('profilePicDisplay').src = user.photoURL || "https://via.placeholder.com/100";
+                closeModal('authModal');
             } else {
                 currentUser = null;
                 document.getElementById('navProfileText').innerText = "چوونە ژوور";
@@ -292,17 +449,14 @@
             }
         });
 
+        // ڤەکرنا پەنجەرەیا دروست ل دویڤ دۆخێ هەژمارێ
         document.getElementById('btnOpenAuth').addEventListener('click', () => {
-            if(currentUser) openModal('profileModal');
-            else openModal('authModal');
+            if(currentUser) openModal('profileModal'); else openModal('authModal');
         });
 
-        // دەرکەفتن
-        document.getElementById('btnLogout').addEventListener('click', () => {
-            signOut(auth).then(() => { closeModal('profileModal'); });
-        });
+        document.getElementById('btnLogout').addEventListener('click', () => signOut(auth));
 
-        // دروستکرنا هەژمارێ (Signup) + زۆرەملێکرنا پشتڕاستکرنا ئیمەیلی
+        // تۆمارکرن
         document.getElementById('btnSignup').addEventListener('click', async () => {
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
@@ -310,94 +464,42 @@
             const imageFile = document.getElementById('signupImage').files[0];
 
             if(!name || !email || !pass) return showMsg("هەمی بۆشاییان تژی بکە!");
-            showMsg("چاڤەڕێ بە، یێ دروست دکەت...", true);
+            showMsg("چاڤەڕێ بە...", true);
 
             try {
                 const cred = await createUserWithEmailAndPassword(auth, email, pass);
                 let photoUrl = "";
-                
                 if(imageFile) {
                     try {
                         const storageRef = ref(storage, 'profile_pictures/' + cred.user.uid);
                         await uploadBytes(storageRef, imageFile);
                         photoUrl = await getDownloadURL(storageRef);
-                    } catch (uploadErr) {
-                        console.error("وێنە نەهاتە ئەپلۆدکرن:", uploadErr);
-                    }
+                    } catch(e) { console.error("خەلەتی د وێنەی دا", e); }
                 }
-
                 await updateProfile(cred.user, { displayName: name, photoURL: photoUrl });
                 await sendEmailVerification(cred.user);
-                
-                // ڕاستەوخۆ ژ هەژمارێ دەردێخین دا کو بچیت ئیمەیلی پشتڕاست کەت
                 await signOut(auth);
-                
-                showMsg("هەژمار دروست بوو! بەلێ پێدڤییە سەرەدانێ ل ئیمەیلێ خۆ بکەی (سەحکە فۆلدەرێ Spam ژی) و لینکی پشتڕاست بکەی، پاشی وەرە ژوور.", true);
-                document.getElementById('signupForm').reset();
-                
+                showMsg("دروست بوو! سەرەدانێ ل ئیمەیلێ خۆ بکە بۆ پشتڕاستکرنێ (فۆلدەرێ Spam ژبیر نەکە).", true);
             } catch (err) {
-                if(err.code === 'auth/email-already-in-use') showMsg("ئەڤ ئیمەیلە یێ بکارئینایە!");
+                if(err.code === 'auth/email-already-in-use') showMsg("ئیمەیل یێ هەی!");
                 else showMsg("خەلەتی: " + err.message);
             }
         });
 
-        // چوونە ژوور (Login)
+        // چوونە ژوور
         document.getElementById('btnLogin').addEventListener('click', () => {
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPassword').value;
-            if(!email || !pass) return showMsg("ئیمەیل و پاسۆردی بنڤیسە!");
+            if(!email || !pass) return showMsg("داتایان بنڤیسە!");
             showMsg("چاڤەڕێ بە...", true);
-            
-            signInWithEmailAndPassword(auth, email, pass)
-                .then((cred) => {
-                    // پشکنین ئایا ئیمەیل یێ پشتڕاستکرییە؟
-                    if (!cred.user.emailVerified) {
-                        signOut(auth);
-                        showMsg("هیڤییە پێشتر ئیمەیلێ خۆ پشتڕاست بکە! (ل ناڤ ئیمەیلی سەحکە فۆلدەرێ Spam)");
-                    } else {
-                        showMsg("");
-                    }
-                })
-                .catch(e => showMsg("ئیمەیل یان پاسۆرد خەلەتە."));
+            signInWithEmailAndPassword(auth, email, pass).then((cred) => {
+                if (!cred.user.emailVerified) { signOut(auth); showMsg("پێشتر ئیمەیلێ خۆ پشتڕاست بکە!"); }
+            }).catch(e => showMsg("ئیمەیل یان پاسۆرد خەلەتە."));
         });
 
-        // ب ڕێکا گۆگڵ
+        // چوونە ژوور ب گۆگڵ
         document.getElementById('btnGoogle').addEventListener('click', () => {
-            const provider = new GoogleAuthProvider();
-            signInWithPopup(auth, provider).catch(e => showMsg("خەلەتی د چوونە ژوور ب گۆگڵ دا."));
-        });
-
-        // پاسۆرد ژبیرکرن
-        document.getElementById('btnForgot').addEventListener('click', () => {
-            const email = document.getElementById('forgotEmail').value;
-            if(!email) return showMsg("هیڤییە ئیمەیلی بنڤیسە!");
-            sendPasswordResetEmail(auth, email)
-                .then(() => showMsg("لینکێ گوهۆڕینێ چوو بۆ ئیمەیلێ تە (سەحکە فۆلدەرێ Spam)! ", true))
-                .catch(e => showMsg("خەلەتیەک ڕوویدا: " + e.message));
-        });
-
-        // مۆبایل
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'normal' });
-        let confirmationResult;
-
-        document.getElementById('btnSendCode').addEventListener('click', () => {
-            const phone = document.getElementById('phoneNumber').value;
-            if(!phone) return showMsg("ژمارا مۆبایلێ بنڤیسە!");
-            showMsg("چاڤەڕێ بە...", true);
-            signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
-                .then((result) => {
-                    confirmationResult = result;
-                    document.getElementById('verifyCodeSection').style.display = 'block';
-                    document.getElementById('btnSendCode').style.display = 'none';
-                    showMsg("کۆد هاتە فرێکرن بۆ مۆبایلا تە.", true);
-                }).catch(e => showMsg("خەلەتی د فرێکرنا کۆدی دا: " + e.message));
-        });
-
-        document.getElementById('btnVerifyCode').addEventListener('click', () => {
-            const code = document.getElementById('verificationCode').value;
-            if(!code) return showMsg("کۆدی بنڤیسە!");
-            showMsg("چاڤەڕێ بە...", true);
-            confirmationResult.confirm(code).catch(e => showMsg("کۆد خەلەتە!"));
+            signInWithPopup(auth, new GoogleAuthProvider()).catch(e => showMsg("خەلەتی د گۆگڵ دا ڕوویدا."));
         });
     </script>
 </body>
