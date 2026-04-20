@@ -191,23 +191,19 @@
 
     <script>
         function toggleTheme() { document.body.classList.toggle('dark-mode'); }
-        
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        
         function switchTab(tab) {
             document.getElementById('authMessage').innerText = "";
             ['loginForm', 'signupForm', 'forgotForm', 'phoneForm'].forEach(f => document.getElementById(f).style.display = 'none');
             document.getElementById('tabLogin').classList.remove('active');
             document.getElementById('tabSignup').classList.remove('active');
-            
             if(tab === 'login') { document.getElementById('loginForm').style.display = 'flex'; document.getElementById('tabLogin').classList.add('active'); }
             if(tab === 'signup') { document.getElementById('signupForm').style.display = 'flex'; document.getElementById('tabSignup').classList.add('active'); }
             if(tab === 'forgot') { document.getElementById('forgotForm').style.display = 'flex'; }
             if(tab === 'phone') { document.getElementById('phoneForm').style.display = 'flex'; }
         }
 
-        // وەرگێڕان ئەنیمەیشن
         let typingTimer;
         function startTranslation() {
             const input = document.getElementById('englishInput').value.trim();
@@ -236,13 +232,11 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const storage = getStorage(app);
-        auth.languageCode = 'ku'; 
         
         let currentUser = null;
         const authMsg = document.getElementById('authMessage');
         const showMsg = (text, isSuccess = false) => { authMsg.className = isSuccess ? "auth-msg auth-success" : "auth-msg"; authMsg.innerText = text; };
 
-        // چاڤدێرییا دۆخێ بکارهێنەری
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             if (user) {
@@ -257,16 +251,14 @@
             }
         });
 
-        // کلیککرنا دوگمەیا سەرەکی یا سەرێ شاشەی
         document.getElementById('btnOpenAuth').addEventListener('click', () => {
             if(currentUser) openModal('profileModal');
             else openModal('authModal');
         });
 
-        // دەرکەفتن
         document.getElementById('btnLogout').addEventListener('click', () => signOut(auth));
 
-        // ١. تۆمارکرن ب ئیمەیل و وێنە
+        // دروستکرنا هەژمارێ
         document.getElementById('btnSignup').addEventListener('click', async () => {
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
@@ -280,24 +272,33 @@
                 const cred = await createUserWithEmailAndPassword(auth, email, pass);
                 let photoUrl = "";
                 
-                // ئەگەر وێنە هەبیت دێ ئەپلۆد کەت
                 if(imageFile) {
-                    const storageRef = ref(storage, 'profile_pictures/' + cred.user.uid);
-                    await uploadBytes(storageRef, imageFile);
-                    photoUrl = await getDownloadURL(storageRef);
+                    try {
+                        const storageRef = ref(storage, 'profile_pictures/' + cred.user.uid);
+                        await uploadBytes(storageRef, imageFile);
+                        photoUrl = await getDownloadURL(storageRef);
+                    } catch (uploadErr) {
+                        console.error("وێنە نەهاتە ئەپلۆدکرن:", uploadErr);
+                    }
                 }
 
                 await updateProfile(cred.user, { displayName: name, photoURL: photoUrl });
-                await sendEmailVerification(cred.user);
                 
-                showMsg("هەژمار هاتە دروستکرن! لینکێ پشتڕاستکرنێ چوو ئیمەیلێ تە.", true);
-                document.getElementById('signupForm').reset();
+                // ل ڤێرە بزاڤێ دکەت نامەیێ فرێبکەت، ئەگەر نەچیت دێ خەلەتیێ دەت
+                try {
+                    await sendEmailVerification(cred.user);
+                    showMsg("هەژمار هاتە دروستکرن! سەحکە ئیمەیلێ خۆ و فۆلدەرێ (Spam) ژبیر نەکە بۆ پشتڕاستکرنێ.", true);
+                    document.getElementById('signupForm').reset();
+                } catch (emailErr) {
+                    showMsg("هەژمار د داتابەیسی دا دروست بوو، لێ فایەربەیسی نەشیا نامەیێ فرێبکەت: " + emailErr.message);
+                }
+                
             } catch (err) {
-                showMsg("خەلەتی: " + err.message);
+                if(err.code === 'auth/email-already-in-use') showMsg("ئەڤ ئیمەیلە یێ بکارئینایە!");
+                else showMsg("خەلەتی: " + err.message);
             }
         });
 
-        // ٢. چوونە ژوور ب ئیمەیل
         document.getElementById('btnLogin').addEventListener('click', () => {
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPassword').value;
@@ -306,22 +307,19 @@
             signInWithEmailAndPassword(auth, email, pass).catch(e => showMsg("ئیمەیل یان پاسۆرد خەلەتە."));
         });
 
-        // ٣. چوونە ژوور ب گۆگڵ
         document.getElementById('btnGoogle').addEventListener('click', () => {
             const provider = new GoogleAuthProvider();
             signInWithPopup(auth, provider).catch(e => showMsg("خەلەتی د چوونە ژوور ب گۆگڵ دا."));
         });
 
-        // ٤. پاسۆرد ژبیرکرن
         document.getElementById('btnForgot').addEventListener('click', () => {
             const email = document.getElementById('forgotEmail').value;
             if(!email) return showMsg("هیڤییە ئیمەیلی بنڤیسە!");
             sendPasswordResetEmail(auth, email)
-                .then(() => showMsg("لینکێ گوهۆڕینێ چوو بۆ ئیمەیلێ تە!", true))
+                .then(() => showMsg("لینکێ گوهۆڕینێ چوو بۆ ئیمەیلێ تە (سەحکە فۆلدەرێ Spam)! ", true))
                 .catch(e => showMsg("خەلەتیەک ڕوویدا: " + e.message));
         });
 
-        // ٥. ژمارا مۆبایلێ
         window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'normal' });
         let confirmationResult;
 
