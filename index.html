@@ -63,17 +63,13 @@
         .welcome-content h2 { color: var(--primary-color); margin-bottom: 8px; font-size: 1.6rem; }
         .welcome-content p { color: var(--text-muted); margin-bottom: 20px; font-size: 0.95rem; }
         
-        /* Shared Social Bar Styles */
         .social-bar { display: flex; justify-content: center; gap: 15px; margin-top: 15px; margin-bottom: 25px; }
         .social-bar a { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); font-size: 1.3rem; transition: 0.3s; position: relative; overflow: hidden; }
-        .social-bar a::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: 0.3s; z-index: 0; }
-        .social-bar a i { position: relative; z-index: 1; transition: 0.3s; }
-        
-        .social-bar a:hover.snap { border-color: #FFFC00; transform: translateY(-4px); box-shadow: 0 5px 15px rgba(255, 252, 0, 0.2); } 
+        .social-bar a:hover.snap { border-color: #FFFC00; transform: translateY(-4px); } 
         .social-bar a:hover.snap i { color: #FFFC00; }
-        .social-bar a:hover.insta { border-color: #E1306C; transform: translateY(-4px); box-shadow: 0 5px 15px rgba(225, 48, 108, 0.2); } 
+        .social-bar a:hover.insta { border-color: #E1306C; transform: translateY(-4px); } 
         .social-bar a:hover.insta i { color: #E1306C; }
-        .social-bar a:hover.tele { border-color: #0088cc; transform: translateY(-4px); box-shadow: 0 5px 15px rgba(0, 136, 204, 0.2); }
+        .social-bar a:hover.tele { border-color: #0088cc; transform: translateY(-4px); }
         .social-bar a:hover.tele i { color: #0088cc; }
 
         .choice-btn { display: block; width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
@@ -84,12 +80,10 @@
         /* --- Global Main Content --- */
         main { flex-grow: 1; padding: 15px; max-width: 900px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; align-items: center; }
         
-        /* Back Button */
         .top-action-bar { width: 100%; display: flex; justify-content: flex-start; margin-bottom: 15px; }
         .back-btn { background: var(--surface-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 8px 18px; border-radius: 12px; font-size: 0.95rem; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: 0.3s; cursor: pointer; box-shadow: var(--shadow); }
         .back-btn:hover { background: var(--primary-color); color: white; border-color: var(--primary-color); transform: translateX(5px); }
-        .back-btn i { font-size: 0.9rem; }
-
+        
         .title-header { margin-bottom: 15px; font-size: 1.1rem; color: var(--text-color); text-align: center; }
         
         /* Translator UI */
@@ -129,7 +123,6 @@
         .footer-text { color: var(--text-muted); font-size: 0.8rem; }
         .footer-text span { color: var(--primary-color); font-weight: bold; }
 
-        /* --- Mobile Adjustments --- */
         @media (max-width: 768px) { 
             .boxes-wrapper { grid-template-columns: 1fr; } 
             .btn-swap { transform: rotate(90deg); margin: 6px auto; }
@@ -147,19 +140,13 @@
         <div class="welcome-content">
             <h2>ب خێرهاتی</h2>
             <p>هیڤییە بەشەکێ هەلبژێرە بۆ بەردەوامبوون:</p>
-            
             <div class="social-bar">
-                <a href="https://snapchat.com/add/birhatkrd" target="_blank" class="snap" title="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
-                <a href="https://instagram.com/birhatkrd" target="_blank" class="insta" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://t.me/birhatkrd" target="_blank" class="tele" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+                <a href="https://snapchat.com/add/birhatkrd" target="_blank" class="snap"><i class="fa-brands fa-snapchat"></i></a>
+                <a href="https://instagram.com/birhatkrd" target="_blank" class="insta"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://t.me/birhatkrd" target="_blank" class="tele"><i class="fa-brands fa-telegram"></i></a>
             </div>
-
-            <button class="choice-btn" onclick="selectApp('translator')">
-                <i class="fa-solid fa-language"></i> کوردینگ (وەرگێڕان)
-            </button>
-            <button class="choice-btn" onclick="selectApp('chat')">
-                <i class="fa-solid fa-robot"></i> چارەسەریا سۆشیال میدیایێ
-            </button>
+            <button class="choice-btn" onclick="selectApp('translator')"><i class="fa-solid fa-language"></i> کوردینگ (وەرگێڕان)</button>
+            <button class="choice-btn" onclick="selectApp('chat')"><i class="fa-solid fa-robot"></i> چارەسەریا سۆشیال میدیایێ</button>
         </div>
     </div>
 
@@ -187,20 +174,10 @@
             </li>
             <li onclick="openModal('adsModal')"><i class="fa-solid fa-bullhorn"></i> ڕیکلام دگەل مە</li>
             <li onclick="openModal('maintenanceModal')"><i class="fa-solid fa-star"></i> پەیڤێن دلخواز</li>
-            <li onclick="openModal('maintenanceModal')"><i class="fa-solid fa-clock-rotate-left"></i> دیرۆک</li>
             <li onclick="openModal('maintenanceModal')"><i class="fa-solid fa-gear"></i> ڕێکخستن</li>
         </ul>
         <div class="sidebar-footer">
             <p class="footer-text">Developed by <span>Birhat Krd</span></p>
-        </div>
-    </div>
-
-    <div id="betaModal" class="modal-overlay">
-        <div class="modal-content" style="text-align: center;">
-            <i class="fa-solid fa-hammer" style="font-size: 2.2rem; color: var(--primary-color); margin-bottom: 12px;"></i>
-            <h2 style="color:var(--primary-color); margin-bottom:10px; font-size: 1.2rem;">BETA Version</h2>
-            <p style="color:var(--text-muted); margin-bottom:20px; font-size: 0.9rem; line-height: 1.6;">ئەڤ مالپەرە ل ژێر کارکرنێ دایە و کار ل سەر دهێتە کرن. ل دەمەکێ نێزیک دێ ب تەواوی بەردەست بیت.</p>
-            <button class="choice-btn" style="background:var(--primary-color); color:white;" onclick="closeModal('betaModal')">تێگەهشتم</button>
         </div>
     </div>
 
@@ -236,48 +213,30 @@
             <h2 class="title-header">زیرەکترین وەرگێڕان ب زاراڤێ بادینی 😍</h2>
             <div class="translator-box">
                 <div class="boxes-wrapper">
-                    
                     <div class="text-box">
-                        <div class="box-head"><span>ئینگلیزی (English)</span></div>
+                        <div class="box-head"><span>ئینگلیزی (یان هەر زمانەک)</span></div>
                         <textarea id="englishInput" placeholder="Enter text here..." dir="ltr" style="text-align: left;"></textarea>
                         <div class="toolbar">
-                            <div class="toolbar-group">
-                                <i class="fa-solid fa-microphone" title="ئاخافتن ب مایکێ" onclick="openModal('maintenanceModal')"></i>
-                                <i class="fa-solid fa-volume-high" title="گوهداریکرن" onclick="openModal('maintenanceModal')"></i>
-                            </div>
+                            <div class="toolbar-group"></div>
                             <div class="toolbar-group">
                                 <i class="fa-solid fa-trash-can" title="ژێبرن" onclick="document.getElementById('englishInput').value=''"></i>
                             </div>
                         </div>
                     </div>
-
                     <button class="btn-swap"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>
-
                     <div class="text-box">
                         <div class="box-head"><span>کوردی (بادینی)</span></div>
                         <textarea id="kurdishOutput" readonly placeholder="ئەنجام دێ ل ڤێرە دیار بیت..." dir="rtl" style="text-align: right;"></textarea>
                         <div class="toolbar">
                             <div class="toolbar-group">
                                 <i class="fa-regular fa-copy" title="کۆپیکرن" onclick="copyText('kurdishOutput')"></i>
-                                <i class="fa-solid fa-share-nodes" title="بەلاڤکرن" onclick="openModal('maintenanceModal')"></i>
-                            </div>
-                            <div class="toolbar-group">
-                                <i class="fa-solid fa-star" title="سەیڤکرن" onclick="openModal('maintenanceModal')"></i>
                             </div>
                         </div>
                     </div>
-
                 </div>
-                
                 <div class="translate-btn-wrapper">
                     <button class="btn-main-translate" onclick="startTranslation()"><i class="fa-solid fa-language"></i> وەرگێڕان بکە</button>
                 </div>
-            </div>
-
-            <div class="social-bar" style="margin-top: 30px;">
-                <a href="https://snapchat.com/add/birhatkrd" target="_blank" class="snap" title="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
-                <a href="https://instagram.com/birhatkrd" target="_blank" class="insta" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://t.me/birhatkrd" target="_blank" class="tele" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
             </div>
         </div>
 
@@ -285,24 +244,15 @@
             <div class="top-action-bar" style="margin-bottom: 10px;">
                 <button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-right"></i> زڤرین</button>
             </div>
-            
             <div class="chat-container">
-                <div class="chat-header">
-                    <i class="fa-solid fa-robot"></i> کوردینگ تیم
-                </div>
+                <div class="chat-header"><i class="fa-solid fa-robot"></i> کوردینگ تیم</div>
                 <div class="chat-body" id="chatBody">
-                    <div class="chat-msg msg-ai">سلاڤ! ئەز ئەی ئایێ 'کوردینگ تیم'م. هەر ئاریشەیەکا سۆشیال میدیای یان مۆبایلێ تە هەبیت، دکاری ل ڤێرە بنڤیسی دا هاریکاریا تە بکەم.</div>
+                    <div class="chat-msg msg-ai">سلاڤ! ئەز ئەی ئایێ 'کوردینگ تیم'م. هەر ئاریشەیەکا سۆشیال میدیای یان مۆبایلێ تە هەبیت، دکاری ل ڤێرە بنڤیسی دا هاریکاریا تە بکەم ب زمانێ بادینی.</div>
                 </div>
                 <div class="chat-footer">
                     <input type="text" id="aiInput" placeholder="پرسیارا خۆ ل ڤێرە بنڤیسە..." onkeypress="handleEnter(event)">
                     <button onclick="sendAiMessage()"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
-            </div>
-
-            <div class="social-bar" style="margin-top: 25px;">
-                <a href="https://snapchat.com/add/birhatkrd" target="_blank" class="snap" title="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
-                <a href="https://instagram.com/birhatkrd" target="_blank" class="insta" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://t.me/birhatkrd" target="_blank" class="tele" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
             </div>
         </div>
     </main>
@@ -312,40 +262,66 @@
     </footer>
 
     <script>
-        // دەرکەفتنا پەنجەرەیا هەلبژاردنێ ل دەستپێکێ
-        window.onload = function() {
-            document.getElementById('welcomeScreen').style.display = 'flex';
-        };
+        // داتایێن گرێدانا SambaNova
+        const API_URL = "proxy.php"; // گرنگە کو فایلێ proxy.php د ناڤ هۆستێ تە دا هەبیت
+        const AI_MODEL = "Meta-Llama-3.1-70B-Instruct"; 
 
-        // فەنکشنا هەلبژاردنا بەرنامەی
-        function selectApp(appType) {
-            document.getElementById('welcomeScreen').style.display = 'none';
-            if (appType === 'translator') {
-                document.getElementById('translatorView').style.display = 'flex';
-                document.getElementById('aiChatView').style.display = 'none';
-                openModal('betaModal'); 
-            } else if (appType === 'chat') {
-                document.getElementById('translatorView').style.display = 'none';
-                document.getElementById('aiChatView').style.display = 'flex';
+        async function callSambaNova(systemPrompt, userText) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: AI_MODEL,
+                        messages: [
+                            { role: "system", content: systemPrompt },
+                            { role: "user", content: userText }
+                        ],
+                        temperature: 0.2
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error("خەلەتی:", error);
+                return "ببوورە، خەلەتییەک چێبوو د پەیوەندیکرنێ دا. پێداچوونێ ل ئەنترنێتێ یان فایلێ proxy.php بکە.";
             }
         }
 
-        // فەنکشنا زڤرینێ بۆ شاشەیا سەرەکی
-        function goBack() {
-            document.getElementById('translatorView').style.display = 'none';
-            document.getElementById('aiChatView').style.display = 'none';
-            document.getElementById('welcomeScreen').style.display = 'flex';
+        // وەرگێڕان
+        async function startTranslation() {
+            const input = document.getElementById('englishInput').value.trim();
+            const outputBox = document.getElementById('kurdishOutput');
+
+            if (input === "") {
+                alert("هیڤییە تێکستەکێ بنڤیسە دا وەرگێڕین!");
+                return;
+            }
+
+            outputBox.value = "ل هیڤییێ بە، یێ وەرگێڕانێ دکەت..."; 
+
+            // پرۆمپتەکا زۆر بهێز بۆ بادینی یا پەتی
+            const systemPrompt = "تۆ وەرگێڕەکێ زیرەک و پرۆفێشناڵی. ڤی دەقێ خوارێ وەرگێڕە سەر زمانێ کوردی، زاراڤێ بادینی (دەڤەرا دهۆکێ). گەلەک گرنگە کو چ پەیڤێن سۆرانی بکارنەینی، بتنێ بادینییا پەتی. هیچ تێبینییەکێ یان ئاخفتنەکا دی نەدە، بتنێ دەقێ وەرگێڕای بنڤیسە.";
+            
+            const result = await callSambaNova(systemPrompt, input);
+            outputBox.value = result;
         }
 
-        // کۆدێ تایبەت ب ئەی ئای (کوردینگ تیم)
-        function sendAiMessage() {
+        // چاتا ئەی ئای
+        async function sendAiMessage() {
             const inputField = document.getElementById('aiInput');
             const userText = inputField.value.trim();
-            if(!userText) return;
+            if (!userText) return;
 
             const chatBody = document.getElementById('chatBody');
 
-            // دروستکرنا نامەیا بکارئینەری
             const userDiv = document.createElement('div');
             userDiv.className = 'chat-msg msg-user';
             userDiv.innerText = userText;
@@ -354,75 +330,46 @@
             inputField.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
 
-            // ئەنیمەیشنا نڤیسینێ بۆ ئەی ئای (ڕاستڤەکری و خێراتر)
-            setTimeout(() => {
-                const aiDiv = document.createElement('div');
-                aiDiv.className = 'chat-msg msg-ai';
-                chatBody.appendChild(aiDiv);
-                
-                const responseText = "ب خێرهاتی 🌹\nچاڤەرێ بن ل دەمەکێ نێزیک دێ ب باشترین شێواز خزمەتا هەوە کەین.";
-                let i = 0;
-                const typingInterval = setInterval(() => {
-                    aiDiv.innerText += responseText.charAt(i);
-                    i++;
-                    chatBody.scrollTop = chatBody.scrollHeight;
-                    if (i >= responseText.length) clearInterval(typingInterval);
-                }, 30); 
-            }, 500); 
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'chat-msg msg-ai';
+            loadingDiv.innerText = "یێ هزر دکەت...";
+            chatBody.appendChild(loadingDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // پرۆمپت بۆ چاتێ ب بادینی
+            const systemPrompt = "تۆ هاریکارەکێ ئەی ئای یێ سەر ب تیمێ 'کوردینگ' ڤە. هاریکارییا خەلکی بکە ل سەر پرسیارێن سۆشیال میدیا و تەکنەلۆژیایێ. گەلەک گرنگە کو بتنێ ب کوردییا بادینی (دەڤەرا دهۆکێ) بەرسڤێ بدەی و چ پەیڤێن سۆرانی تێکەل نەکەی.";
+            
+            const responseText = await callSambaNova(systemPrompt, userText);
+            
+            loadingDiv.innerText = responseText;
+            chatBody.scrollTop = chatBody.scrollHeight;
         }
 
-        function handleEnter(e) {
-            if(e.key === 'Enter') sendAiMessage();
-        }
-
+        // کۆدێن دیزاین و پەنجەرەیان (ئەوێن تە ژێبربوون مە زڤڕاندن)
+        window.onload = function() { document.getElementById('welcomeScreen').style.display = 'flex'; };
+        function selectApp(appType) { document.getElementById('welcomeScreen').style.display = 'none'; if (appType === 'translator') { document.getElementById('translatorView').style.display = 'flex'; document.getElementById('aiChatView').style.display = 'none'; } else if (appType === 'chat') { document.getElementById('translatorView').style.display = 'none'; document.getElementById('aiChatView').style.display = 'flex'; } }
+        function goBack() { document.getElementById('translatorView').style.display = 'none'; document.getElementById('aiChatView').style.display = 'none'; document.getElementById('welcomeScreen').style.display = 'flex'; }
+        function handleEnter(e) { if(e.key === 'Enter') sendAiMessage(); }
         function toggleTheme() { document.body.classList.toggle('dark-mode'); document.getElementById('themeIcon').className = document.body.classList.contains('dark-mode') ? 'fa-solid fa-sun' : 'fa-solid fa-moon'; }
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').style.display = document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none'; }
+        
+        // فەنکشنێن نوی یێن سایدبار و مۆدالان کو پێدڤی بوون
+        function toggleSidebar() { 
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open'); 
+            document.getElementById('sidebarOverlay').style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+        }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function copyText(id) { const txt = document.getElementById(id).value; if(txt) { navigator.clipboard.writeText(txt); alert("هاتە کۆپیکرن!"); } }
-
+        function copyText(id) { 
+            const txt = document.getElementById(id).value; 
+            if(txt) { navigator.clipboard.writeText(txt); alert("هاتە کۆپیکرن!"); } 
+        }
         function submitAdRequest() {
             const name = document.getElementById('adName').value.trim();
-            const contact = document.getElementById('adContact').value.trim();
-            const desc = document.getElementById('adDesc').value.trim();
-            
-            if(!name || !contact || !desc) {
-                alert("هیڤییە هەمی بۆشاییان پڕ بکە!");
-            } else {
+            if(!name) { alert("هیڤییە هەمی بۆشاییان پڕ بکە!"); } else {
                 alert("داخوازیا تە ب سەرکەفتیانە هاتە فرێکرن. دێ پەیوەندیێ ب تە کەین!");
-                document.getElementById('adName').value = "";
-                document.getElementById('adContact').value = "";
-                document.getElementById('adDesc').value = "";
                 closeModal('adsModal');
             }
-        }
-
-        let typingTimer;
-        function startTranslation() {
-            const input = document.getElementById('englishInput').value.trim();
-            const outputBox = document.getElementById('kurdishOutput');
-
-            if(input === "") {
-                alert("هیڤییە تێکستەکێ بنڤیسە دا وەرگێڕین!");
-                return;
-            }
-
-            clearInterval(typingTimer);
-            outputBox.value = ""; 
-
-            // نڤیسینا ڕاستڤەکری یا وەرگێڕانێ ب بادینی پەتی
-            const message = "کار ل سەر مالپەری دهێتە کرن، ل دەمەکێ نێزیک دێ ب باشترین شێواز هێتە د خزمەتا هەوە دا ژ لایێ دروستکەرێ مالپەری Birhat Krd.";
-            let i = 0;
-            const speed = 40; 
-
-            typingTimer = setInterval(() => {
-                if (i < message.length) {
-                    outputBox.value += message.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(typingTimer);
-                }
-            }, speed);
         }
     </script>
 </body>
